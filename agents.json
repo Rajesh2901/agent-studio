@@ -1,0 +1,1895 @@
+[
+  {
+    "id": 1,
+    "name": "CartRescue Agent",
+    "category": "E-Commerce",
+    "concept": "Intercepts high-intent cart abandonment sessions via real-time exit triggers, resolving buyer doubts and offering personalized incentives.",
+    "targetUsers": "Shopify & WooCommerce DTC Merchants",
+    "revenueModel": "8-12% commission on recovered cart value via Stripe webhook.",
+    "revenueType": "Commission",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "cartValue",
+        "label": "Cart Total ($)",
+        "type": "number",
+        "defaultValue": 185.0
+      },
+      {
+        "key": "item",
+        "label": "Cart Line Item",
+        "type": "text",
+        "defaultValue": "Handcrafted Leather Jacket"
+      },
+      {
+        "key": "city",
+        "label": "Destination City",
+        "type": "text",
+        "defaultValue": "Chicago, IL"
+      },
+      {
+        "key": "userHesitation",
+        "label": "User Query / Hesitation",
+        "type": "text",
+        "defaultValue": "Will this arrive before Friday?"
+      }
+    ],
+    "demoSteps": [
+      "Session SDK detects 45s idle time and cursor exit vector on shipping step.",
+      "Agent evaluates carrier delivery API: FedEx Express delivers Thursday 4 PM.",
+      "Agent launches slide-in concierge chat addressing Chicago winter transit times.",
+      "Shopper asks: 'Will this arrive before Friday?'",
+      "Agent applies promo code EXPRESS_COMP; shopper converts; $18.50 (10%) billed."
+    ],
+    "codeScaffold": "\"\"\"\nCartRescue Agent - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"CartRescue Agent\", description=\"E-commerce real-time cart recovery agent\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"CartRescue Agent\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Commission)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"CartRescue Agent autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 2,
+    "name": "ListingPulse",
+    "category": "E-Commerce",
+    "concept": "Monitors competitor stockouts and keyword ranking volatility to autonomously rewrite product titles and bullet points.",
+    "targetUsers": "Amazon FBA & Walmart Marketplace Sellers",
+    "revenueModel": "$0.25 per listing rewrite deployed + $1.00 per competitor stockout captured.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "asin",
+        "label": "Product ASIN",
+        "type": "text",
+        "defaultValue": "B09X8Y7Z12"
+      },
+      {
+        "key": "keyword",
+        "label": "Target Search Keyword",
+        "type": "text",
+        "defaultValue": "Ergonomic Memory Foam Pillow"
+      },
+      {
+        "key": "competitorName",
+        "label": "Competitor Brand",
+        "type": "text",
+        "defaultValue": "SleepComfort Pro"
+      }
+    ],
+    "demoSteps": [
+      "Competitor SleepComfort Pro goes out of stock in 4 fulfillment centers.",
+      "Keepa & SP-API listener detects stockout in 3 minutes.",
+      "Agent analyzes search query velocity and rewrites bullet points to highlight 'Guaranteed In-Stock & 1-Day Prime Delivery'.",
+      "Pre-approved autopilot pushes update via Amazon SP-API.",
+      "Listing receives 42 surge orders; $1.00 fee charged to seller balance."
+    ],
+    "codeScaffold": "\"\"\"\nListingPulse - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"ListingPulse\", description=\"Amazon listing auto-optimizer\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"ListingPulse\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"ListingPulse autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 3,
+    "name": "VendorNudge",
+    "category": "E-Commerce",
+    "concept": "Ingests supplier invoices, benchmarks raw material price drops against commodities indices, and drafts calibrated renegotiation demands.",
+    "targetUsers": "Wholesale Brands & Physical Goods Manufacturers",
+    "revenueModel": "15% contingency fee on validated invoice savings upon credit memo approval.",
+    "revenueType": "Rev-Share",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "vendor",
+        "label": "Supplier / Vendor Name",
+        "type": "text",
+        "defaultValue": "Highland Green Bean Importers"
+      },
+      {
+        "key": "material",
+        "label": "Commodity / Material",
+        "type": "text",
+        "defaultValue": "ICE Arabica Green Coffee"
+      },
+      {
+        "key": "invoiceValue",
+        "label": "Invoice Total ($)",
+        "type": "number",
+        "defaultValue": 4800.0
+      }
+    ],
+    "demoSteps": [
+      "Manufacturer uploads $4,800 supplier invoice.",
+      "Agent compares invoice unit price against falling ICE Arabica futures (-11.8%).",
+      "Agent drafts courteous negotiation citing volume commitment and market index.",
+      "Supplier issues $480.00 credit memo for upcoming shipment.",
+      "VendorNudge collects $72.00 (15%) fee from client corporate card."
+    ],
+    "codeScaffold": "\"\"\"\nVendorNudge - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"VendorNudge\", description=\"Automated supplier renegotiation agent\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"VendorNudge\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Rev-Share)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"VendorNudge autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 4,
+    "name": "ReturnShield",
+    "category": "E-Commerce",
+    "concept": "Evaluates return photos and reason codes in real time, offering instant keep-and-partial-refund settlements to eliminate reverse logistics waste.",
+    "targetUsers": "Apparel, Furniture & Home Goods Retailers",
+    "revenueModel": "$0.50 per automated return triage + $3.00 bonus per avoided return shipment.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Easy",
+    "inputFields": [
+      {
+        "key": "item",
+        "label": "Returned Product Name",
+        "type": "text",
+        "defaultValue": "Moroccan Geometric Wool Rug 5x7"
+      },
+      {
+        "key": "reason",
+        "label": "Customer Reason Code",
+        "type": "text",
+        "defaultValue": "Minor fringe thread loose on corner"
+      },
+      {
+        "key": "cartValue",
+        "label": "Original Item Price ($)",
+        "type": "number",
+        "defaultValue": 65.0
+      }
+    ],
+    "demoSteps": [
+      "Customer initiates return for $65 rug, uploading a smartphone photo.",
+      "Vision model classifies defect as cosmetic fringe loose thread.",
+      "Agent estimates return freight ($19.40) exceeds restocking value.",
+      "Presents instant settlement: 'Keep rug and receive $25 cash refund instantly, or ship back for $65.'",
+      "Customer accepts; store saves $19.40; $3.50 fee debited to merchant."
+    ],
+    "codeScaffold": "\"\"\"\nReturnShield - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"ReturnShield\", description=\"Reverse logistics triage agent\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"ReturnShield\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"ReturnShield autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 5,
+    "name": "FlashDrop",
+    "category": "E-Commerce",
+    "concept": "Listens to live TikTok/Instagram/YouTube shopping streams, answers comments in real time, and pins dynamic checkout links synced with the speaker.",
+    "targetUsers": "Live-Stream Creators & Boutique Retailers",
+    "revenueModel": "2.5% affiliate commission on stream sales completed via agent-pinned links.",
+    "revenueType": "Commission",
+    "difficulty": "Hard",
+    "inputFields": [
+      {
+        "key": "sku",
+        "label": "Featured SKU",
+        "type": "text",
+        "defaultValue": "Waterproof Winter Parka (SKU-PARKA-04)"
+      },
+      {
+        "key": "question",
+        "label": "Live Stream Chat Question",
+        "type": "text",
+        "defaultValue": "What size is the model wearing and is it machine washable?"
+      },
+      {
+        "key": "cartValue",
+        "label": "Live GMV Generated ($)",
+        "type": "number",
+        "defaultValue": 2400.0
+      }
+    ],
+    "demoSteps": [
+      "Host describes seam-sealed waterproof lining on live stream.",
+      "Chat stream fills with sizing and washing questions.",
+      "Agent synthesizes real-time audio transcript and product spec sheet.",
+      "Posts precise comment: '@Sarah Model is 5 7 wearing Size M. Yes, machine wash cold!'",
+      "Pins SKU #04 checkout card; 28 units sold; $60.00 commission captured."
+    ],
+    "codeScaffold": "\"\"\"\nFlashDrop - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"FlashDrop\", description=\"Live social commerce co-host\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"FlashDrop\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Commission)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"FlashDrop autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 6,
+    "name": "ReviewAlchemy",
+    "category": "E-Commerce",
+    "concept": "Scrapes verified 5-star customer reviews and autonomously transforms them into TikTok/Reels UGC scripts, storyboards, and audio ad packs.",
+    "targetUsers": "DTC Marketers & Performance Ad Agencies",
+    "revenueModel": "$4.99 per generated creative ad pack (script + storyboard + voiceover).",
+    "revenueType": "Fixed",
+    "difficulty": "Easy",
+    "inputFields": [
+      {
+        "key": "brand",
+        "label": "Brand Name",
+        "type": "text",
+        "defaultValue": "GlowBot Skincare"
+      },
+      {
+        "key": "review",
+        "label": "Customer 5-Star Review",
+        "type": "text",
+        "defaultValue": "Cleared my cystic acne in 9 days without drying my skin!"
+      }
+    ],
+    "demoSteps": [
+      "System imports 5-star review from Shopify store inbox.",
+      "Agent crafts 3-part UGC script: 3-second hook, agitation, and call-to-action.",
+      "Synthesizes natural ElevenLabs voiceover file and CapCut storyboard XML.",
+      "Marketer reviews and clicks 'Download Full Production Pack'.",
+      "$4.99 charged via Stripe micropayment immediately."
+    ],
+    "codeScaffold": "\"\"\"\nReviewAlchemy - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"ReviewAlchemy\", description=\"Review-to-UGC ad generator\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"ReviewAlchemy\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"ReviewAlchemy autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 7,
+    "name": "B2B QuoteBot",
+    "category": "E-Commerce",
+    "concept": "Parses custom wholesale RFQ emails and CAD/PDF specs, computes manufacturing margins against live material feeds, and issues binding quotes in 90s.",
+    "targetUsers": "Custom Packaging Manufacturers & Machine Shops",
+    "revenueModel": "$15 per generated binding quotation + 1% success fee upon customer deposit.",
+    "revenueType": "Fixed",
+    "inputFields": [
+      {
+        "key": "spec",
+        "label": "Custom Specification",
+        "type": "text",
+        "defaultValue": "50,000 Custom Gold-Embossed Cosmetic Boxes (350 GSM)"
+      },
+      {
+        "key": "quantity",
+        "label": "Requested Quantity",
+        "type": "number",
+        "defaultValue": 50000
+      },
+      {
+        "key": "quoteValue",
+        "label": "Calculated Quote Value ($)",
+        "type": "number",
+        "defaultValue": 18400.0
+      }
+    ],
+    "demoSteps": [
+      "Client sends 14-page packaging spec sheet PDF via email.",
+      "QuoteBot extracts board weight, die-cut passes, and foil stamps.",
+      "Queries live paper inventory and shop machine hour costs via ERP.",
+      "Generates formal branded PDF quote with 72-hour price guarantee.",
+      "$15 charged for quote generation; 1% ($184) captured upon deposit."
+    ],
+    "codeScaffold": "\"\"\"\nB2B QuoteBot - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"B2B QuoteBot\", description=\"Custom B2B RFQ quoting agent\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"B2B QuoteBot\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"B2B QuoteBot autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 8,
+    "name": "ProposalSniper",
+    "category": "Freelance & Agency",
+    "concept": "Monitors freelance platforms and RFP feeds, assesses win probability, and drafts bespoke technical proposals within 3 minutes of posting.",
+    "targetUsers": "Freelance Developers & Digital Agencies",
+    "revenueModel": "$1.50 per sent bid or credit pack ($29 for 25 bids) + 3% won deal fee.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Easy",
+    "inputFields": [
+      {
+        "key": "jobTitle",
+        "label": "Upwork / RFP Job Title",
+        "type": "text",
+        "defaultValue": "Next.js 14 & Supabase Auth Migration"
+      },
+      {
+        "key": "budget",
+        "label": "Client Budget ($)",
+        "type": "number",
+        "defaultValue": 4000.0
+      },
+      {
+        "key": "clientPriority",
+        "label": "Key Client Requirement",
+        "type": "text",
+        "defaultValue": "Zero downtime and test coverage"
+      }
+    ],
+    "demoSteps": [
+      "Job posted on Upwork with $4,000 budget.",
+      "Agent cross-references freelancer GitHub portfolio for matching Next.js repos.",
+      "Generates 250-word proposal detailing exact zero-downtime database strategy.",
+      "Freelancer taps 'Approve & Send' on mobile notification.",
+      "Proposal lands first in client inbox; $1.50 deducted from credit pack."
+    ],
+    "codeScaffold": "\"\"\"\nProposalSniper - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"ProposalSniper\", description=\"RFP and Upwork automated proposal pitcher\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"ProposalSniper\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"ProposalSniper autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 9,
+    "name": "ScopeGuard",
+    "category": "Freelance & Agency",
+    "concept": "Sits in Slack/Teams/email, detects client requests outside the signed Statement of Work, and politely drafts itemized Change Orders.",
+    "targetUsers": "Software Agencies & Web Consultants",
+    "revenueModel": "5% transaction processing fee on all approved Change Orders paid via payment link.",
+    "revenueType": "Commission",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "clientRequest",
+        "label": "Client Slack Message",
+        "type": "text",
+        "defaultValue": "Can we also add multi-currency checkout before next Tuesday's launch?"
+      },
+      {
+        "key": "hourlyRate",
+        "label": "Agency Hourly Rate ($)",
+        "type": "number",
+        "defaultValue": 100.0
+      },
+      {
+        "key": "cartValue",
+        "label": "Estimated Change Order Value ($)",
+        "type": "number",
+        "defaultValue": 1400.0
+      }
+    ],
+    "demoSteps": [
+      "Client writes in Slack requesting multi-currency support.",
+      "ScopeGuard checks indexed project SOW (feature is excluded).",
+      "Pings agency owner: 'Out-of-scope detected ($1,400 est). Draft Change Order?'",
+      "Owner clicks 'Approve'; ScopeGuard posts polite breakdown with Stripe link.",
+      "Client pays $1,400; ScopeGuard deducts $70 (5%) in real time."
+    ],
+    "codeScaffold": "\"\"\"\nScopeGuard - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"ScopeGuard\", description=\"Agency scope creep negotiator\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"ScopeGuard\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Commission)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"ScopeGuard autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 10,
+    "name": "AudioPolisher",
+    "category": "Freelance & Agency",
+    "concept": "Ingests raw audio, removes filler words, and generates show notes, timestamps, audiograms, and sponsor ad markers in real time.",
+    "targetUsers": "Podcasters, Voiceover Artists & YouTubers",
+    "revenueModel": "Pay-as-you-go $0.15 per audio minute processed charged via Stripe.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "episodeTitle",
+        "label": "Episode Title",
+        "type": "text",
+        "defaultValue": "Ep 42: The Future of Autonomous AI Workflows"
+      },
+      {
+        "key": "audioDuration",
+        "label": "Recording Duration (Minutes)",
+        "type": "number",
+        "defaultValue": 45
+      }
+    ],
+    "demoSteps": [
+      "Creator uploads 45-minute raw .wav interview.",
+      "Agent trims filler words, normalizes audio to -16 LUFS, and generates timestamps.",
+      "Extracts 3 high-impact soundbites and renders vertical video audiograms.",
+      "Produces SEO show notes and newsletter markdown.",
+      "Creator downloads bundle; $6.75 charged to credit card."
+    ],
+    "codeScaffold": "\"\"\"\nAudioPolisher - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"AudioPolisher\", description=\"Podcast post-production agent\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"AudioPolisher\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"AudioPolisher autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 11,
+    "name": "SubDocu",
+    "category": "Freelance & Agency",
+    "concept": "Translates subcontractor WhatsApp voice notes into certified daily field logs and reconciles invoices.",
+    "targetUsers": "Enterprise & SMB Freelance & Agency Operators",
+    "revenueModel": "Real-time fixed fee ($3.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #11-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for SubDocu."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 15.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for SubDocu.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $3.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nSubDocu - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"SubDocu\", description=\"Translates subcontractor WhatsApp voice notes into certified daily field logs and reconciles invoices.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"SubDocu\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"SubDocu autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 12,
+    "name": "LocalizationLeap",
+    "category": "Freelance & Agency",
+    "concept": "Translates app string files using brand lore and strictly enforces UI button character boundaries.",
+    "targetUsers": "Enterprise & SMB Freelance & Agency Operators",
+    "revenueModel": "Real-time micro-fee fee ($25.00) upon completed resolution.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #12-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for LocalizationLeap."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 125.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for LocalizationLeap.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $25.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nLocalizationLeap - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"LocalizationLeap\", description=\"Translates app string files using brand lore and strictly enforces UI button character boundaries.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"LocalizationLeap\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"LocalizationLeap autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 13,
+    "name": "GhostThread",
+    "category": "Freelance & Agency",
+    "concept": "Converts executive voice notes into high-performing LinkedIn posts and X threads with 1-tap approval.",
+    "targetUsers": "Enterprise & SMB Freelance & Agency Operators",
+    "revenueModel": "Real-time micro-fee fee ($5.00) upon completed resolution.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #13-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for GhostThread."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 25.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for GhostThread.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $5.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nGhostThread - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"GhostThread\", description=\"Converts executive voice notes into high-performing LinkedIn posts and X threads with 1-tap approval.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"GhostThread\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"GhostThread autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 14,
+    "name": "DesignBrief AI",
+    "category": "Freelance & Agency",
+    "concept": "Conducts interactive intake interviews to extract concrete creative specifications and deliverables.",
+    "targetUsers": "Enterprise & SMB Freelance & Agency Operators",
+    "revenueModel": "Real-time fixed fee ($10.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #14-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for DesignBrief AI."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 50.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for DesignBrief AI.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $10.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nDesignBrief AI - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"DesignBrief AI\", description=\"Conducts interactive intake interviews to extract concrete creative specifications and deliverables.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"DesignBrief AI\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"DesignBrief AI autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 15,
+    "name": "CloudLeak",
+    "category": "Finance & Cost",
+    "concept": "Monitors AWS/GCP telemetry, detects idle compute nodes, and submits ready-to-merge Terraform pull requests.",
+    "targetUsers": "Enterprise & SMB Finance & Cost Operators",
+    "revenueModel": "Real-time rev-share fee ($72.00) upon completed resolution.",
+    "revenueType": "Rev-Share",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #15-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for CloudLeak."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 360.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for CloudLeak.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $72.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nCloudLeak - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"CloudLeak\", description=\"Monitors AWS/GCP telemetry, detects idle compute nodes, and submits ready-to-merge Terraform pull requests.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"CloudLeak\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Rev-Share)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"CloudLeak autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 16,
+    "name": "ChasingDunning",
+    "category": "Finance & Cost",
+    "concept": "Monitors overdue invoices in QuickBooks, sending escalating polite reminders with 1-click payment links.",
+    "targetUsers": "Enterprise & SMB Finance & Cost Operators",
+    "revenueModel": "Real-time commission fee ($48.00) upon completed resolution.",
+    "revenueType": "Commission",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #16-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for ChasingDunning."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 240.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for ChasingDunning.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $48.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nChasingDunning - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"ChasingDunning\", description=\"Monitors overdue invoices in QuickBooks, sending escalating polite reminders with 1-click payment links.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"ChasingDunning\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Commission)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"ChasingDunning autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 17,
+    "name": "SaaSSnip",
+    "category": "Finance & Cost",
+    "concept": "Detects orphaned SaaS seats (Figma, Slack, Zoom) from departed contractors and automates deprovisioning.",
+    "targetUsers": "Enterprise & SMB Finance & Cost Operators",
+    "revenueModel": "Real-time rev-share fee ($180.00) upon completed resolution.",
+    "revenueType": "Rev-Share",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #17-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for SaaSSnip."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 900.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for SaaSSnip.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $180.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nSaaSSnip - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"SaaSSnip\", description=\"Detects orphaned SaaS seats (Figma, Slack, Zoom) from departed contractors and automates deprovisioning.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"SaaSSnip\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Rev-Share)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"SaaSSnip autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 18,
+    "name": "GrantFinder AI",
+    "category": "Finance & Cost",
+    "concept": "Scans non-dilutive grant databases, matches eligibility, and drafts complete federal submission dossiers.",
+    "targetUsers": "Enterprise & SMB Finance & Cost Operators",
+    "revenueModel": "Real-time fixed fee ($49.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #18-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for GrantFinder AI."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 245.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for GrantFinder AI.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $49.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nGrantFinder AI - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"GrantFinder AI\", description=\"Scans non-dilutive grant databases, matches eligibility, and drafts complete federal submission dossiers.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"GrantFinder AI\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"GrantFinder AI autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 19,
+    "name": "TaxReceipt Concierge",
+    "category": "Finance & Cost",
+    "concept": "Matches bank transactions to inbox receipts and classifies IRS Section 179 deductions in real time.",
+    "targetUsers": "Enterprise & SMB Finance & Cost Operators",
+    "revenueModel": "Real-time micro-fee fee ($0.50) upon completed resolution.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #19-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for TaxReceipt Concierge."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 2.5
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for TaxReceipt Concierge.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $0.50 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nTaxReceipt Concierge - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"TaxReceipt Concierge\", description=\"Matches bank transactions to inbox receipts and classifies IRS Section 179 deductions in real time.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"TaxReceipt Concierge\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"TaxReceipt Concierge autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 20,
+    "name": "AuditTrail",
+    "category": "Finance & Cost",
+    "concept": "Crawls GitHub commits and Jira tickets to compile audit-proof IRS Form 6765 R&D tax credit packages.",
+    "targetUsers": "Enterprise & SMB Finance & Cost Operators",
+    "revenueModel": "Real-time rev-share fee ($2400.00) upon completed resolution.",
+    "revenueType": "Rev-Share",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #20-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for AuditTrail."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 12000.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for AuditTrail.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $2400.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nAuditTrail - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"AuditTrail\", description=\"Crawls GitHub commits and Jira tickets to compile audit-proof IRS Form 6765 R&D tax credit packages.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"AuditTrail\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Rev-Share)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"AuditTrail autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 21,
+    "name": "ColdSignal",
+    "category": "Sales & Leads",
+    "concept": "Monitors executive job postings and funding rounds, drafting hyper-personalized outbound emails instantly.",
+    "targetUsers": "Enterprise & SMB Sales & Leads Operators",
+    "revenueModel": "Real-time lead bounty fee ($15.00) upon completed resolution.",
+    "revenueType": "Lead Bounty",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #21-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for ColdSignal."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 75.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for ColdSignal.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $15.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nColdSignal - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"ColdSignal\", description=\"Monitors executive job postings and funding rounds, drafting hyper-personalized outbound emails instantly.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"ColdSignal\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Lead Bounty)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"ColdSignal autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 22,
+    "name": "WebVisitor Reveal",
+    "category": "Sales & Leads",
+    "concept": "Identifies anonymous B2B website visitors via IP reverse-lookup and launches a tailored qualification chat.",
+    "targetUsers": "Enterprise & SMB Sales & Leads Operators",
+    "revenueModel": "Real-time lead bounty fee ($25.00) upon completed resolution.",
+    "revenueType": "Lead Bounty",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #22-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for WebVisitor Reveal."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 125.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for WebVisitor Reveal.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $25.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nWebVisitor Reveal - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"WebVisitor Reveal\", description=\"Identifies anonymous B2B website visitors via IP reverse-lookup and launches a tailored qualification chat.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"WebVisitor Reveal\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Lead Bounty)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"WebVisitor Reveal autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 23,
+    "name": "SpeedToLead",
+    "category": "Sales & Leads",
+    "concept": "Dials high-ticket web form leads within 15 seconds, qualifies them, and warm-transfers to available sales reps.",
+    "targetUsers": "Enterprise & SMB Sales & Leads Operators",
+    "revenueModel": "Real-time lead bounty fee ($35.00) upon completed resolution.",
+    "revenueType": "Lead Bounty",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #23-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for SpeedToLead."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 175.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for SpeedToLead.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $35.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nSpeedToLead - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"SpeedToLead\", description=\"Dials high-ticket web form leads within 15 seconds, qualifies them, and warm-transfers to available sales reps.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"SpeedToLead\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Lead Bounty)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"SpeedToLead autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 24,
+    "name": "PodcastPitcher",
+    "category": "Sales & Leads",
+    "concept": "Matches founders and authors with top podcasts, writing pitch angles referencing specific past episodes.",
+    "targetUsers": "Enterprise & SMB Sales & Leads Operators",
+    "revenueModel": "Real-time lead bounty fee ($150.00) upon completed resolution.",
+    "revenueType": "Lead Bounty",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #24-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for PodcastPitcher."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 750.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for PodcastPitcher.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $150.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nPodcastPitcher - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"PodcastPitcher\", description=\"Matches founders and authors with top podcasts, writing pitch angles referencing specific past episodes.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"PodcastPitcher\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Lead Bounty)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"PodcastPitcher autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 25,
+    "name": "ReviewBooster",
+    "category": "Sales & Leads",
+    "concept": "Texts homeowners after service completion and directs satisfied customers to 1-click SEO Google review links.",
+    "targetUsers": "Enterprise & SMB Sales & Leads Operators",
+    "revenueModel": "Real-time micro-fee fee ($3.00) upon completed resolution.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #25-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for ReviewBooster."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 15.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for ReviewBooster.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $3.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nReviewBooster - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"ReviewBooster\", description=\"Texts homeowners after service completion and directs satisfied customers to 1-click SEO Google review links.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"ReviewBooster\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"ReviewBooster autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 26,
+    "name": "AffiliateScout",
+    "category": "Sales & Leads",
+    "concept": "Crawls publisher articles for dead affiliate links and hot-swaps them in the CMS with higher-paying programs.",
+    "targetUsers": "Enterprise & SMB Sales & Leads Operators",
+    "revenueModel": "Real-time rev-share fee ($1.60) upon completed resolution.",
+    "revenueType": "Rev-Share",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #26-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for AffiliateScout."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 8.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for AffiliateScout.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $1.60 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nAffiliateScout - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"AffiliateScout\", description=\"Crawls publisher articles for dead affiliate links and hot-swaps them in the CMS with higher-paying programs.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"AffiliateScout\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Rev-Share)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"AffiliateScout autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 27,
+    "name": "TicketZero",
+    "category": "Customer Support",
+    "concept": "Connects to Zendesk/Intercom and autonomously performs deterministic operations without human agents.",
+    "targetUsers": "Enterprise & SMB Customer Support Operators",
+    "revenueModel": "Real-time micro-fee fee ($0.85) upon completed resolution.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #27-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for TicketZero."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 4.25
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for TicketZero.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $0.85 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nTicketZero - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"TicketZero\", description=\"Connects to Zendesk/Intercom and autonomously performs deterministic operations without human agents.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"TicketZero\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"TicketZero autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 28,
+    "name": "ChurnBuster Live",
+    "category": "Customer Support",
+    "concept": "Intercepts users clicking 'Cancel Subscription', negotiating custom pause plans or feature downgrades.",
+    "targetUsers": "Enterprise & SMB Customer Support Operators",
+    "revenueModel": "Real-time commission fee ($14.85) upon completed resolution.",
+    "revenueType": "Commission",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #28-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for ChurnBuster Live."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 74.25
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for ChurnBuster Live.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $14.85 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nChurnBuster Live - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"ChurnBuster Live\", description=\"Intercepts users clicking 'Cancel Subscription', negotiating custom pause plans or feature downgrades.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"ChurnBuster Live\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Commission)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"ChurnBuster Live autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 29,
+    "name": "NightWatch",
+    "category": "Customer Support",
+    "concept": "Triages after-hours emergency tenant calls, screening routine issues and dispatching on-call contractors.",
+    "targetUsers": "Enterprise & SMB Customer Support Operators",
+    "revenueModel": "Real-time micro-fee fee ($12.00) upon completed resolution.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #29-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for NightWatch."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 60.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for NightWatch.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $12.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nNightWatch - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"NightWatch\", description=\"Triages after-hours emergency tenant calls, screening routine issues and dispatching on-call contractors.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"NightWatch\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"NightWatch autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 30,
+    "name": "Multilingual Concierge",
+    "category": "Customer Support",
+    "concept": "Serves as a 24/7 WhatsApp concierge for boutique hotels, handling door codes and local dining upsells.",
+    "targetUsers": "Enterprise & SMB Customer Support Operators",
+    "revenueModel": "Real-time commission fee ($8.00) upon completed resolution.",
+    "revenueType": "Commission",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #30-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for Multilingual Concierge."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 40.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for Multilingual Concierge.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $8.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nMultilingual Concierge - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"Multilingual Concierge\", description=\"Serves as a 24/7 WhatsApp concierge for boutique hotels, handling door codes and local dining upsells.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"Multilingual Concierge\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Commission)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"Multilingual Concierge autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 31,
+    "name": "BugTriage AI",
+    "category": "Customer Support",
+    "concept": "Ingests Sentry crash reports, reproduces errors in a virtual sandbox, and submits tested GitHub bug fix PRs.",
+    "targetUsers": "Enterprise & SMB Customer Support Operators",
+    "revenueModel": "Real-time micro-fee fee ($2.00) upon completed resolution.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #31-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for BugTriage AI."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 10.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for BugTriage AI.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $2.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nBugTriage AI - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"BugTriage AI\", description=\"Ingests Sentry crash reports, reproduces errors in a virtual sandbox, and submits tested GitHub bug fix PRs.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"BugTriage AI\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"BugTriage AI autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 32,
+    "name": "LeasePencil",
+    "category": "Real Estate",
+    "concept": "Ingests 90-page commercial lease PDFs, extracting CAM charges and critical dates into a 5-year cash-flow Excel model.",
+    "targetUsers": "Enterprise & SMB Real Estate Operators",
+    "revenueModel": "Real-time fixed fee ($39.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #32-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for LeasePencil."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 195.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for LeasePencil.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $39.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nLeasePencil - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"LeasePencil\", description=\"Ingests 90-page commercial lease PDFs, extracting CAM charges and critical dates into a 5-year cash-flow Excel model.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"LeasePencil\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"LeasePencil autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 33,
+    "name": "ZoningSherlock",
+    "category": "Real Estate",
+    "concept": "Cross-references municipal GIS maps and land development bylaws to evaluate ADU feasibility and setbacks.",
+    "targetUsers": "Enterprise & SMB Real Estate Operators",
+    "revenueModel": "Real-time fixed fee ($75.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #33-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for ZoningSherlock."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 375.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for ZoningSherlock.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $75.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nZoningSherlock - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"ZoningSherlock\", description=\"Cross-references municipal GIS maps and land development bylaws to evaluate ADU feasibility and setbacks.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"ZoningSherlock\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"ZoningSherlock autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 34,
+    "name": "TenantScreener",
+    "category": "Real Estate",
+    "concept": "Verifies rental paystubs via document forensics to detect forged templates and computes income coverage.",
+    "targetUsers": "Enterprise & SMB Real Estate Operators",
+    "revenueModel": "Real-time fixed fee ($25.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #34-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for TenantScreener."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 125.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for TenantScreener.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $25.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nTenantScreener - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"TenantScreener\", description=\"Verifies rental paystubs via document forensics to detect forged templates and computes income coverage.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"TenantScreener\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"TenantScreener autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 35,
+    "name": "StagingVision",
+    "category": "Real Estate",
+    "concept": "Renders photorealistic 4K virtually staged room photos from empty room images with shoppable decor links.",
+    "targetUsers": "Enterprise & SMB Real Estate Operators",
+    "revenueModel": "Real-time fixed fee ($12.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #35-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for StagingVision."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 60.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for StagingVision.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $12.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nStagingVision - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"StagingVision\", description=\"Renders photorealistic 4K virtually staged room photos from empty room images with shoppable decor links.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"StagingVision\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"StagingVision autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 36,
+    "name": "OralExam AI",
+    "category": "Education",
+    "concept": "Conducts 15-minute proctored spoken examinations via dynamic voice dialogue, generating CEFR scorecards.",
+    "targetUsers": "Enterprise & SMB Education Operators",
+    "revenueModel": "Real-time fixed fee ($9.99) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #36-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for OralExam AI."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 49.95
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for OralExam AI.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $9.99 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nOralExam AI - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"OralExam AI\", description=\"Conducts 15-minute proctored spoken examinations via dynamic voice dialogue, generating CEFR scorecards.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"OralExam AI\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"OralExam AI autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 37,
+    "name": "CodeVetting AI",
+    "category": "Education",
+    "concept": "Proctors live coding interviews in a collaborative browser IDE, evaluating algorithms and anti-cheat telemetry.",
+    "targetUsers": "Enterprise & SMB Education Operators",
+    "revenueModel": "Real-time fixed fee ($25.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #37-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for CodeVetting AI."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 125.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for CodeVetting AI.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $25.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nCodeVetting AI - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"CodeVetting AI\", description=\"Proctors live coding interviews in a collaborative browser IDE, evaluating algorithms and anti-cheat telemetry.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"CodeVetting AI\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"CodeVetting AI autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 38,
+    "name": "CourseToAudiobook",
+    "category": "Education",
+    "concept": "Converts 150-page textbooks or training syllabi into episodic Socratic podcasts on a private RSS feed.",
+    "targetUsers": "Enterprise & SMB Education Operators",
+    "revenueModel": "Real-time fixed fee ($19.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #38-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for CourseToAudiobook."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 95.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for CourseToAudiobook.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $19.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nCourseToAudiobook - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"CourseToAudiobook\", description=\"Converts 150-page textbooks or training syllabi into episodic Socratic podcasts on a private RSS feed.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"CourseToAudiobook\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"CourseToAudiobook autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 39,
+    "name": "SyllabusCloner",
+    "category": "Education",
+    "concept": "Generates accreditation-ready 12-week university course plans, lab rubrics, and Canvas LMS cartridges.",
+    "targetUsers": "Enterprise & SMB Education Operators",
+    "revenueModel": "Real-time fixed fee ($45.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #39-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for SyllabusCloner."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 225.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for SyllabusCloner.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $45.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nSyllabusCloner - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"SyllabusCloner\", description=\"Generates accreditation-ready 12-week university course plans, lab rubrics, and Canvas LMS cartridges.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"SyllabusCloner\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"SyllabusCloner autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 40,
+    "name": "RedlineBot",
+    "category": "Legal & Compliance",
+    "concept": "Scans incoming vendor contracts, flags non-standard liability clauses, and outputs redlined .docx with Track Changes.",
+    "targetUsers": "Enterprise & SMB Legal & Compliance Operators",
+    "revenueModel": "Real-time fixed fee ($19.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #40-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for RedlineBot."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 95.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for RedlineBot.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $19.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nRedlineBot - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"RedlineBot\", description=\"Scans incoming vendor contracts, flags non-standard liability clauses, and outputs redlined .docx with Track Changes.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"RedlineBot\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"RedlineBot autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 41,
+    "name": "PrivacyAudit AI",
+    "category": "Legal & Compliance",
+    "concept": "Crawls websites for unconsented tracking pixels, generating compliant privacy policies and cookie banners.",
+    "targetUsers": "Enterprise & SMB Legal & Compliance Operators",
+    "revenueModel": "Real-time fixed fee ($49.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #41-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for PrivacyAudit AI."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 245.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for PrivacyAudit AI.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $49.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nPrivacyAudit AI - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"PrivacyAudit AI\", description=\"Crawls websites for unconsented tracking pixels, generating compliant privacy policies and cookie banners.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"PrivacyAudit AI\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"PrivacyAudit AI autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 42,
+    "name": "TenderShield",
+    "category": "Legal & Compliance",
+    "concept": "Audits government tender proposals against Section L & M solicitation requirements to eliminate bid disqualification.",
+    "targetUsers": "Enterprise & SMB Legal & Compliance Operators",
+    "revenueModel": "Real-time fixed fee ($250.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #42-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for TenderShield."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 1250.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for TenderShield.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $250.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nTenderShield - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"TenderShield\", description=\"Audits government tender proposals against Section L & M solicitation requirements to eliminate bid disqualification.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"TenderShield\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"TenderShield autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 43,
+    "name": "MusicClear AI",
+    "category": "Legal & Compliance",
+    "concept": "Scans audio tracks for sampled beats, identifies rights holders in ASCAP registries, and drafts sync licenses.",
+    "targetUsers": "Enterprise & SMB Legal & Compliance Operators",
+    "revenueModel": "Real-time fixed fee ($29.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #43-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for MusicClear AI."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 145.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for MusicClear AI.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $29.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nMusicClear AI - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"MusicClear AI\", description=\"Scans audio tracks for sampled beats, identifies rights holders in ASCAP registries, and drafts sync licenses.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"MusicClear AI\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"MusicClear AI autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 44,
+    "name": "PriorAuth Express",
+    "category": "Healthcare",
+    "concept": "Cross-checks clinical notes against private insurer criteria, compiling approved prior-authorization request packets.",
+    "targetUsers": "Enterprise & SMB Healthcare Operators",
+    "revenueModel": "Real-time fixed fee ($15.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #44-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for PriorAuth Express."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 75.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for PriorAuth Express.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $15.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nPriorAuth Express - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"PriorAuth Express\", description=\"Cross-checks clinical notes against private insurer criteria, compiling approved prior-authorization request packets.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"PriorAuth Express\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"PriorAuth Express autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 45,
+    "name": "DentistRecall",
+    "category": "Healthcare",
+    "concept": "Monitors dental PMS for morning cancellations, texting overdue patients to fill open hygiene chair slots.",
+    "targetUsers": "Enterprise & SMB Healthcare Operators",
+    "revenueModel": "Real-time lead bounty fee ($20.00) upon completed resolution.",
+    "revenueType": "Lead Bounty",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #45-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for DentistRecall."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 100.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for DentistRecall.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $20.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nDentistRecall - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"DentistRecall\", description=\"Monitors dental PMS for morning cancellations, texting overdue patients to fill open hygiene chair slots.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"DentistRecall\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Lead Bounty)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"DentistRecall autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 46,
+    "name": "WellnessIntake",
+    "category": "Healthcare",
+    "concept": "Transcribes physical therapy intake voice recordings into EHR SOAP notes and personalized home exercise plans.",
+    "targetUsers": "Enterprise & SMB Healthcare Operators",
+    "revenueModel": "Real-time micro-fee fee ($4.50) upon completed resolution.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #46-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for WellnessIntake."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 22.5
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for WellnessIntake.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $4.50 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nWellnessIntake - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"WellnessIntake\", description=\"Transcribes physical therapy intake voice recordings into EHR SOAP notes and personalized home exercise plans.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"WellnessIntake\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"WellnessIntake autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 47,
+    "name": "SEC Filings Alerter",
+    "category": "Trading & Arbitrage",
+    "concept": "Parses SEC EDGAR 8-K filings within 3 seconds of release, alerting day traders to material non-obvious disclosures.",
+    "targetUsers": "Enterprise & SMB Trading & Arbitrage Operators",
+    "revenueModel": "Real-time micro-fee fee ($0.25) upon completed resolution.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #47-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for SEC Filings Alerter."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 1.25
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for SEC Filings Alerter.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $0.25 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nSEC Filings Alerter - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"SEC Filings Alerter\", description=\"Parses SEC EDGAR 8-K filings within 3 seconds of release, alerting day traders to material non-obvious disclosures.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"SEC Filings Alerter\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"SEC Filings Alerter autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 48,
+    "name": "CardFlip",
+    "category": "Trading & Arbitrage",
+    "concept": "Scrapes newly listed eBay Buy-It-Now sports cards, comparing prices against PSA comps to flag undervalued cards.",
+    "targetUsers": "Enterprise & SMB Trading & Arbitrage Operators",
+    "revenueModel": "Real-time micro-fee fee ($2.00) upon completed resolution.",
+    "revenueType": "Micro-fee",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #48-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for CardFlip."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 10.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for CardFlip.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $2.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nCardFlip - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"CardFlip\", description=\"Scrapes newly listed eBay Buy-It-Now sports cards, comparing prices against PSA comps to flag undervalued cards.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"CardFlip\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Micro-fee)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"CardFlip autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 49,
+    "name": "DomainFlippr",
+    "category": "Trading & Arbitrage",
+    "concept": "Evaluates expiring domain drop lists, vetting backlink equity and USPTO trademark clearance for site builders.",
+    "targetUsers": "Enterprise & SMB Trading & Arbitrage Operators",
+    "revenueModel": "Real-time fixed fee ($5.00) upon completed resolution.",
+    "revenueType": "Fixed",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #49-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for DomainFlippr."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 25.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for DomainFlippr.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $5.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nDomainFlippr - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"DomainFlippr\", description=\"Evaluates expiring domain drop lists, vetting backlink equity and USPTO trademark clearance for site builders.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"DomainFlippr\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Fixed)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"DomainFlippr autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  },
+  {
+    "id": 50,
+    "name": "FreightRate Arbitrage",
+    "category": "Trading & Arbitrage",
+    "concept": "Monitors freight load boards, matching carrier truck lanes and auto-submitting spot rate counter-bids.",
+    "targetUsers": "Enterprise & SMB Trading & Arbitrage Operators",
+    "revenueModel": "Real-time lead bounty fee ($25.00) upon completed resolution.",
+    "revenueType": "Lead Bounty",
+    "difficulty": "Medium",
+    "inputFields": [
+      {
+        "key": "targetEntity",
+        "label": "Target Record / Identifier",
+        "type": "text",
+        "defaultValue": "Record #50-2026-X"
+      },
+      {
+        "key": "inputTelemetry",
+        "label": "Input Data / Telemetry",
+        "type": "text",
+        "defaultValue": "Autonomous trigger parameters for FreightRate Arbitrage."
+      },
+      {
+        "key": "quoteValue",
+        "label": "Associated Transaction Value ($)",
+        "type": "number",
+        "defaultValue": 125.0
+      }
+    ],
+    "demoSteps": [
+      "Ingestion event received for FreightRate Arbitrage.",
+      "Agent evaluates domain knowledge base and policy guardrails.",
+      "Tool execution performed in isolated sandbox environment.",
+      "Compliance verification and safety checks satisfied.",
+      "Value verified; $25.00 fee logged to Stripe Connect ledger."
+    ],
+    "codeScaffold": "\"\"\"\nFreightRate Arbitrage - Production Agent Scaffold\nArchitecture: FastAPI + LLM Orchestration + Stripe Connect\n\"\"\"\nimport os\nfrom fastapi import FastAPI, HTTPException, Request\nfrom pydantic import BaseModel\nimport stripe\n\nstripe.api_key = os.getenv(\"STRIPE_SECRET_KEY\", \"sk_test_mock_123\")\napp = FastAPI(title=\"FreightRate Arbitrage\", description=\"Monitors freight load boards, matching carrier truck lanes and auto-submitting spot rate counter-bids.\")\n\nclass ExecutionPayload(BaseModel):\n    session_id: str\n    target_data: dict\n\n@app.post(\"/v1/execute\")\nasync def execute_agent(payload: ExecutionPayload):\n    \"\"\"Executes the autonomous agent reasoning loop and captures value.\"\"\"\n    # 1. Context validation & grounding\n    session_id = payload.session_id\n    \n    # 2. Dynamic Tool Calling & LLM reasoning\n    result = {\n        \"status\": \"success\",\n        \"agent\": \"FreightRate Arbitrage\",\n        \"action_taken\": \"Automated resolution completed\",\n        \"session_id\": session_id\n    }\n    \n    # 3. Real-Time Stripe Fee Settlement (Lead Bounty)\n    charge = stripe.Charge.create(\n        amount=1500, # In cents ($15.00)\n        currency=\"usd\",\n        source=\"tok_visa\",\n        description=f\"FreightRate Arbitrage autonomous execution fee\"\n    )\n    result[\"stripe_charge_id\"] = charge.id\n    return result\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8080)\n"
+  }
+]
