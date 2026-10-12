@@ -1,6 +1,13 @@
 # AgentStudio OS: 50 Real-Time Revenue AI Agent Projects & Live Demos
 
-An enterprise multi-agent workbench and interactive execution hub featuring **50 production-ready AI agent project workspaces**, complete with live simulation playgrounds, real-time Stripe billing webhooks, code scaffolding generators, and technical architectural blueprints.
+> **Autonomous Real-Time Revenue Agent Orchestration Hub**  
+> 50 Production-Ready AI Agent Project Workspaces with Live Execution Playgrounds & Stripe Settlement.
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-6366f1?style=for-the-badge&logo=github)](https://rajesh2901.github.io/agent-studio/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-emerald?style=for-the-badge&logo=python)](https://python.org)
+
+🌐 **Live Hosted Web UI**: [https://rajesh2901.github.io/agent-studio/](https://rajesh2901.github.io/agent-studio/)
 
 ---
 
