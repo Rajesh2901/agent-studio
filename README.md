@@ -1,1 +1,60 @@
-# agent-studio
+# AgentStudio OS: 50 Real-Time Revenue AI Agent Projects & Live Demos
+
+An enterprise multi-agent workbench and interactive execution hub featuring **50 production-ready AI agent project workspaces**, complete with live simulation playgrounds, real-time Stripe billing webhooks, code scaffolding generators, and technical architectural blueprints.
+
+---
+
+## ⚡ Quick Start
+
+### 1. Launch via PowerShell or Batch
+Run the provided one-click launcher:
+```powershell
+.\run.ps1
+```
+Or with Windows Command Prompt:
+```cmd
+run.bat
+```
+
+### 2. Manual Launch
+```bash
+python server.py
+```
+Open **[http://localhost:8050](http://localhost:8050)** in your browser.
+
+---
+
+## 🧭 Project Layout
+
+```
+agent-studio/
+├── server.py              # Zero-dependency Python HTTP & REST API server
+├── agents_data.py         # Complete database of 50 agent project schemas, steps & generators
+├── GEMINI.md              # Project rules & execution permissions
+├── run.ps1                # PowerShell one-click runner with auto-browser opening
+├── run.bat                # Windows Batch one-click runner
+├── README.md              # Documentation
+└── static/
+    └── index.html         # Rich 3-column obsidian dark-mode web application (Tailwind CSS)
+```
+
+---
+
+## 🎯 Features per Agent Project
+
+For every single one of the 50 ideas across 10 categories:
+1. **Interactive Demo Playground:**
+   - Tailored form inputs for custom parameters (cart value, line items, cloud burn rate, voice transcript, lease spec, etc.).
+   - Visual execution DAG timeline (Steps 1–5).
+   - Live streaming reasoning terminal with simulated sub-millisecond execution logs.
+   - Synthesized output deliverable viewer with 1-click clipboard copy.
+2. **Real-Time Monetization HUD:**
+   - Dynamic real-time fee calculation (Commissions, Micro-transactions, Rev-share, Lead bounties).
+   - Idempotency transaction tokens and unique Stripe charge IDs.
+   - Live Stripe Webhook payload inspector (`charge.captured` event JSON).
+   - Real-time session ledger showing all recent billing actions.
+3. **Starter Code Scaffolder:**
+   - Production-ready FastAPI + LLM orchestration + Stripe Connect starter code for every agent.
+   - 1-click download button (`.py` export) for each project.
+4. **Architecture & Tech Specs:**
+   - Detailed target customer profile, monetization mechanics, and recommended technology stack.

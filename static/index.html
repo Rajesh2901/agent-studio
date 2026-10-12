@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentStudio OS - 50 Autonomous AI Agent Projects & Live Demos</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Custom scrollbars */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #090d16; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .pulse-subtle { animation: pulse-subtle 2s infinite ease-in-out; }
+  </style>
+</head>
+<body class="bg-[#070a12] text-slate-100 min-h-screen antialiased flex flex-col font-sans select-none">
+
+  <!-- Top App Bar -->
+  <header class="h-14 border-b border-slate-800/80 bg-[#0c111d]/90 backdrop-blur-md px-4 flex items-center justify-between z-30 sticky top-0">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-sm tracking-tight text-white">AgentStudio OS</span>
+          <span class="px-1.5 py-0.5 text-[10px] rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">v2.4 PROD</span>
+        </div>
+        <p class="text-[11px] text-slate-400 -mt-0.5">50 Autonomous Real-Time Revenue Agent Workspaces</p>
+      </div>
+    </div>
+
+    <!-- Global Telemetry Counters -->
+    <div class="flex items-center gap-4 text-xs font-mono">
+      <div class="hidden md:flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-900/80 border border-slate-800">
+        <span class="text-slate-400">Platform GMV:</span>
+        <span id="globalGmv" class="font-bold text-indigo-400">$128,450.00</span>
+      </div>
+      <div class="flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-950/30 border border-emerald-500/30">
+        <span class="text-emerald-400/80">Real-Time Revenue:</span>
+        <span id="globalFees" class="font-bold text-emerald-400">$14,920.50</span>
+      </div>
+      <div class="hidden lg:flex items-center gap-1.5 text-slate-400">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-subtle"></span>
+        <span id="activeDaemons">18 Daemons Live</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Workspace Layout: 3 Columns -->
+  <div class="flex-1 flex overflow-hidden">
+
+    <!-- LEFT SIDEBAR: Projects Navigator -->
+    <aside class="w-80 md:w-88 border-r border-slate-800/80 bg-[#0a0f1d] flex flex-col flex-shrink-0">
+      
+      <!-- Search & Filters -->
+      <div class="p-3 border-b border-slate-800 space-y-2">
+        <div class="relative">
+          <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <input type="text" id="agentSearch" placeholder="Search 50 projects..." 
+            class="w-full bg-slate-900 border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+        </div>
+
+        <!-- Category Horizontal Filter -->
+        <div class="flex gap-1 overflow-x-auto pb-1" id="categoryTabs">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Scrollable Projects List -->
+      <div class="flex-1 overflow-y-auto divide-y divide-slate-800/40 p-2 space-y-1" id="projectsList">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Footer Info -->
+      <div class="p-3 border-t border-slate-800 text-[11px] text-slate-400 flex justify-between items-center bg-[#070b14]">
+        <span>Showing <strong id="visibleCount" class="text-white">50</strong> / 50 Agents</span>
+        <button onclick="resetAll()" class="text-indigo-400 hover:text-indigo-300 font-medium">Reset Sim</button>
+      </div>
+    </aside>
+
+    <!-- CENTER AREA: Active Agent Workspace & Live Demo Playground -->
+    <main class="flex-1 flex flex-col bg-[#070a12] overflow-y-auto">
+
+      <!-- Agent Header Card -->
+      <div class="p-6 border-b border-slate-800/80 bg-gradient-to-r from-slate-900/60 to-transparent">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1.5">
+              <span id="activeId" class="text-xs font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">PROJECT #01</span>
+              <span id="activeCategory" class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-300">E-Commerce</span>
+              <span id="activeDiff" class="text-xs font-semibold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">Medium MVP</span>
+              <span id="activeRevType" class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Performance Commission</span>
+            </div>
+            <h1 id="activeName" class="text-xl md:text-2xl font-bold text-white tracking-tight">CartRescue Agent</h1>
+            <p id="activeConcept" class="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
+              Intercepts high-intent cart abandonment sessions via real-time exit triggers, resolving buyer doubts and dynamically offering authorized personalized incentives.
+            </p>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="flex items-center gap-2 self-start md:self-auto">
+            <button onclick="exportCurrentProject()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg flex items-center gap-1.5 border border-slate-700 transition-colors">
+              <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              Export Project (.py)
+            </button>
+            <button onclick="runSimulation()" id="runBtn" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-lg shadow-indigo-600/30 transition-all">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              Run Live Demo
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode Switcher Tabs -->
+        <div class="flex items-center gap-2 mt-6 border-b border-slate-800 text-xs font-medium">
+          <button onclick="switchTab('demo')" id="tabDemo" class="pb-2.5 px-3 border-b-2 border-indigo-500 text-indigo-400 font-semibold transition-colors">
+            ⚡ Interactive Demo Playground
+          </button>
+          <button onclick="switchTab('code')" id="tabCode" class="pb-2.5 px-3 border-b-2 border-transparent text-slate-400 hover:text-white transition-colors">
+            📦 Starter Code Scaffold
+          </button>
+          <button onclick="switchTab('arch')" id="tabArch" class="pb-2.5 px-3 border-b-2 border-transparent text-slate-400 hover:text-white transition-colors">
+            📐 Architecture & Tech Specs
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content Area -->
+      <div class="p-6 space-y-6 flex-1">
+
+        <!-- TAB 1: DEMO PLAYGROUND -->
+        <div id="contentDemo" class="space-y-6">
+          
+          <!-- Section 1: Dynamic Input Parameters -->
+          <div class="bg-[#0b101d] border border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Demo Input Parameters</h3>
+                <p class="text-[11px] text-slate-400">Customize the live scenario or keep default realistic presets.</p>
+              </div>
+              <button onclick="resetInputs()" class="text-xs text-indigo-400 hover:underline">Reset Preset</button>
+            </div>
+
+            <!-- Dynamic Form Fields Generated via JS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs" id="dynamicFormFields">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Section 2: Step-by-Step Execution Stepper & Terminal -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            
+            <!-- Execution DAG Timeline -->
+            <div class="bg-[#0b101d] border border-slate-800 rounded-xl p-5 shadow-sm flex flex-col">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                  <span>Execution DAG Pipeline</span>
+                  <span id="dagStatus" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-400">STANDBY</span>
+                </h3>
+                <span id="latencyTimer" class="text-xs font-mono text-emerald-400">0ms</span>
+              </div>
+
+              <!-- Stepper List -->
+              <div class="space-y-3 flex-1" id="stepperList">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+
+            <!-- Streaming Reasoning Console -->
+            <div class="bg-[#05070e] border border-slate-800 rounded-xl p-4 shadow-sm flex flex-col font-mono text-xs">
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-[11px] text-slate-400">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span>Agent Reasoning Terminal</span>
+                </div>
+                <span id="terminalSpeed">348 msgs/sec</span>
+              </div>
+              
+              <!-- Terminal Stream Box -->
+              <div id="terminalStream" class="flex-1 min-h-[220px] max-h-[280px] overflow-y-auto space-y-1 text-slate-300 text-[11px] leading-relaxed">
+                <div class="text-slate-500">// Terminal initialized. Click 'Run Live Demo' to simulate execution loop...</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Section 3: Generated Deliverable & Final Output -->
+          <div class="bg-[#0b101d] border border-slate-800 rounded-xl p-5 shadow-sm space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Synthesized Agent Output & Deliverable</h3>
+                <p class="text-[11px] text-slate-400">Direct business artifact produced by this agent project.</p>
+              </div>
+              <button onclick="copyOutput()" class="text-xs font-medium text-indigo-400 hover:text-white px-2.5 py-1 rounded bg-slate-800/80 border border-slate-700">
+                Copy JSON Payload
+              </button>
+            </div>
+
+            <div id="outputDisplay" class="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs text-emerald-300 overflow-x-auto min-h-[120px]">
+              <span class="text-slate-500">// Output will render here upon simulation execution...</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB 2: CODE SCAFFOLD -->
+        <div id="contentCode" class="hidden space-y-4">
+          <div class="bg-[#0b101d] border border-slate-800 rounded-xl p-5 shadow-sm space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Production Starter Scaffold (Python FastAPI)</h3>
+                <p class="text-[11px] text-slate-400">Self-contained production boilerplate with Stripe Connect and agent tool definitions.</p>
+              </div>
+              <button onclick="exportCurrentProject()" class="text-xs font-semibold px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg">
+                Download Script (.py)
+              </button>
+            </div>
+            <pre id="codeView" class="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs text-indigo-200 overflow-x-auto max-h-[500px]">
+            </pre>
+          </div>
+        </div>
+
+        <!-- TAB 3: ARCHITECTURE SPECS -->
+        <div id="contentArch" class="hidden space-y-4">
+          <div class="bg-[#0b101d] border border-slate-800 rounded-xl p-5 shadow-sm space-y-4 text-xs">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">System Architecture & Target Profile</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg">
+                <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider mb-1">Target Paying Customer</span>
+                <span id="specTargetUsers" class="text-slate-100 font-medium"></span>
+              </div>
+              <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg">
+                <span class="text-emerald-400 block text-[10px] uppercase font-bold tracking-wider mb-1">Monetization Model</span>
+                <span id="specRevModel" class="text-emerald-200 font-medium"></span>
+              </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg space-y-2">
+              <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Recommended Technology Stack</span>
+              <ul class="list-disc list-inside space-y-1 text-slate-300 font-mono text-[11px]">
+                <li><strong class="text-white">API Layer:</strong> FastAPI / Node.js 20 with Webhook signature verification</li>
+                <li><strong class="text-white">Orchestrator:</strong> Temporal.io / LangGraph deterministic state DAG</li>
+                <li><strong class="text-white">Inference:</strong> Gemini 1.5 Flash / Claude 3.5 Sonnet (Function Calling)</li>
+                <li><strong class="text-white">Settlement:</strong> Stripe Connect Custom with idempotent idempotency_key</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- RIGHT SIDEBAR: Real-Time Monetization HUD -->
+    <aside class="w-80 border-l border-slate-800/80 bg-[#0a0f1d] hidden xl:flex flex-col flex-shrink-0">
+      
+      <!-- Panel Header -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div>
+          <h2 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Monetization HUD</h2>
+          <p class="text-[10px] text-slate-400">Real-time ledger & settlement stream</p>
+        </div>
+        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">ACTIVE</span>
+      </div>
+
+      <!-- Current Event Settlement Card -->
+      <div class="p-4 border-b border-slate-800 space-y-3 bg-[#070b14]">
+        <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Last Transaction Event</div>
+        
+        <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 space-y-2 font-mono text-xs">
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400 text-[10px]">Fee Captured:</span>
+            <span id="lastTxAmount" class="font-bold text-emerald-400 text-sm">$18.50</span>
+          </div>
+          <div class="flex justify-between items-center text-[11px]">
+            <span class="text-slate-400">Fee Model:</span>
+            <span id="lastTxLabel" class="text-slate-200">10% Recovery Fee</span>
+          </div>
+          <div class="flex justify-between items-center text-[11px]">
+            <span class="text-slate-400">Token ID:</span>
+            <span id="lastTxToken" class="text-indigo-400 text-[10px] truncate max-w-[120px]">tx_agt_9428f821</span>
+          </div>
+          <div class="flex justify-between items-center text-[11px]">
+            <span class="text-slate-400">Stripe Charge:</span>
+            <span id="lastStripeCharge" class="text-slate-400 text-[10px] truncate max-w-[120px]">ch_3N92847291</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stripe Webhook Payload Inspector -->
+      <div class="p-4 border-b border-slate-800 space-y-2 flex-1 flex flex-col overflow-hidden">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Stripe Webhook Payload</span>
+          <span class="text-[10px] text-emerald-400 font-mono">200 OK</span>
+        </div>
+        <pre id="webhookInspector" class="flex-1 bg-slate-950 border border-slate-800 rounded-lg p-3 font-mono text-[10px] text-indigo-300 overflow-y-auto leading-relaxed">
+{
+  "event": "charge.captured",
+  "status": "idle"
+}
+        </pre>
+      </div>
+
+      <!-- Live Transaction Stream -->
+      <div class="p-4 border-t border-slate-800 text-xs flex flex-col h-48 bg-[#070b14]">
+        <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-2">Live Session Ledger</span>
+        <div class="flex-1 overflow-y-auto space-y-1.5 font-mono text-[11px]" id="txHistory">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- JavaScript Frontend Logic -->
+  <script>
+    let allAgents = [];
+    let currentAgent = null;
+    let activeCategory = "All";
+    let isRunning = false;
+
+    const categories = ["All", "E-Commerce", "Freelance & Agency", "Finance & Cost", "Sales & Leads", "Customer Support", "Real Estate", "Education", "Legal & Compliance", "Healthcare", "Trading & Arbitrage"];
+
+    // Initialize
+    async function init() {
+      renderCategoryTabs();
+      await loadAgents();
+      await loadMetrics();
+
+      document.getElementById('agentSearch').addEventListener('input', (e) => {
+        renderProjectsList(e.target.value.toLowerCase());
+      });
+    }
+
+    function renderCategoryTabs() {
+      const container = document.getElementById('categoryTabs');
+      container.innerHTML = categories.map(cat => `
+        <button onclick="setCategory('${cat}')" 
+          class="px-2.5 py-1 rounded text-[11px] font-medium whitespace-nowrap transition-colors ${cat === activeCategory ? 'bg-indigo-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-white'}">
+          ${cat}
+        </button>
+      `).join('');
+    }
+
+    function setCategory(cat) {
+      activeCategory = cat;
+      renderCategoryTabs();
+      renderProjectsList(document.getElementById('agentSearch').value.toLowerCase());
+    }
+
+    async function loadAgents() {
+      try {
+        const res = await fetch('/api/agents');
+        allAgents = await res.json();
+        renderProjectsList();
+        if (allAgents.length > 0) {
+          selectAgent(allAgents[0].id);
+        }
+      } catch (err) {
+        console.error("Failed to load agents:", err);
+      }
+    }
+
+    async function loadMetrics() {
+      try {
+        const res = await fetch('/api/metrics');
+        const metrics = await res.json();
+        document.getElementById('globalGmv').innerText = `$${metrics.totalGmv.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+        document.getElementById('globalFees').innerText = `$${metrics.totalFeesCaptured.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+        document.getElementById('activeDaemons').innerText = `${metrics.activeDaemons} Daemons Live`;
+        renderTxHistory(metrics.transactions);
+      } catch (err) {
+        console.error("Failed to load metrics:", err);
+      }
+    }
+
+    function renderProjectsList(query = "") {
+      const container = document.getElementById('projectsList');
+      const filtered = allAgents.filter(a => {
+        const matchesCat = activeCategory === "All" || a.category === activeCategory;
+        const matchesQuery = !query || a.name.toLowerCase().includes(query) || a.concept.toLowerCase().includes(query);
+        return matchesCat && matchesQuery;
+      });
+
+      document.getElementById('visibleCount').innerText = filtered.length;
+
+      container.innerHTML = filtered.map(agent => {
+        const isSelected = currentAgent && currentAgent.id === agent.id;
+        return `
+          <div onclick="selectAgent(${agent.id})" 
+            class="p-2.5 rounded-lg cursor-pointer transition-all border ${isSelected ? 'bg-indigo-950/40 border-indigo-500/60 shadow-sm' : 'bg-slate-900/40 hover:bg-slate-900 border-transparent'}">
+            <div class="flex items-center justify-between text-[11px] mb-1">
+              <span class="font-mono font-bold text-indigo-400">#${agent.id < 10 ? '0' + agent.id : agent.id}</span>
+              <span class="text-[10px] text-slate-400">${agent.category}</span>
+            </div>
+            <h4 class="text-xs font-semibold text-white truncate">${agent.name}</h4>
+            <p class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">${agent.concept}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectAgent(id) {
+      currentAgent = allAgents.find(a => a.id === id);
+      if (!currentAgent) return;
+
+      renderProjectsList(document.getElementById('agentSearch').value.toLowerCase());
+
+      // Update Header
+      document.getElementById('activeId').innerText = `PROJECT #${currentAgent.id < 10 ? '0' + currentAgent.id : currentAgent.id}`;
+      document.getElementById('activeName').innerText = currentAgent.name;
+      document.getElementById('activeCategory').innerText = currentAgent.category;
+      document.getElementById('activeConcept').innerText = currentAgent.concept;
+      document.getElementById('activeDiff').innerText = `${currentAgent.difficulty} MVP`;
+      document.getElementById('activeRevType').innerText = currentAgent.revenueType;
+
+      // Update Specs
+      document.getElementById('specTargetUsers').innerText = currentAgent.targetUsers;
+      document.getElementById('specRevModel').innerText = currentAgent.revenueModel;
+      document.getElementById('codeView').innerText = currentAgent.codeScaffold;
+
+      // Render Dynamic Form Inputs
+      renderFormFields();
+
+      // Render Initial Stepper
+      renderStepper(false);
+
+      // Reset Output
+      document.getElementById('outputDisplay').innerHTML = `<span class="text-slate-500">// Ready to execute. Click 'Run Live Demo' to simulate...</span>`;
+      document.getElementById('terminalStream').innerHTML = `<div class="text-slate-500">// Project #${currentAgent.id} loaded in workspace. Click 'Run Live Demo' to begin execution loop...</div>`;
+      document.getElementById('dagStatus').innerText = "STANDBY";
+      document.getElementById('dagStatus').className = "px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-400";
+    }
+
+    function renderFormFields() {
+      const container = document.getElementById('dynamicFormFields');
+      const fields = currentAgent.inputFields || [
+        {key: "targetEntity", label: "Target Entity / Record", type: "text", defaultValue: "Entity-01"},
+        {key: "quoteValue", label: "Value ($)", type: "number", defaultValue: 100}
+      ];
+
+      container.innerHTML = fields.map(f => `
+        <div class="space-y-1">
+          <label class="block font-medium text-slate-300 text-[11px]">${f.label}</label>
+          <input type="${f.type}" id="field_${f.key}" value="${f.defaultValue}" 
+            class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-indigo-500 font-mono">
+        </div>
+      `).join('');
+    }
+
+    function resetInputs() {
+      if (currentAgent) selectAgent(currentAgent.id);
+    }
+
+    function renderStepper(completed = false) {
+      const container = document.getElementById('stepperList');
+      const steps = currentAgent.demoSteps || [];
+
+      container.innerHTML = steps.map((step, idx) => `
+        <div class="flex items-start gap-2.5 text-xs text-slate-300">
+          <span class="w-5 h-5 rounded-full ${completed ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'} flex items-center justify-center font-bold text-[10px] flex-shrink-0 mt-0.5">
+            ${idx + 1}
+          </span>
+          <span class="leading-relaxed ${completed ? 'text-slate-200' : 'text-slate-400'}">${step}</span>
+        </div>
+      `).join('');
+    }
+
+    // Run Simulation
+    async function runSimulation() {
+      if (isRunning || !currentAgent) return;
+      isRunning = true;
+
+      const runBtn = document.getElementById('runBtn');
+      runBtn.disabled = true;
+      runBtn.innerHTML = `
+        <svg class="animate-spin w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+        Executing DAG...
+      `;
+
+      document.getElementById('dagStatus').innerText = "EXECUTING";
+      document.getElementById('dagStatus').className = "px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/20 text-amber-400 border border-amber-500/30";
+
+      // Collect user input fields
+      const payload = {};
+      (currentAgent.inputFields || []).forEach(f => {
+        const el = document.getElementById(`field_${f.key}`);
+        if (el) payload[f.key] = f.type === 'number' ? parseFloat(el.value) : el.value;
+      });
+
+      // Stream terminal logs simulation
+      const terminal = document.getElementById('terminalStream');
+      terminal.innerHTML = "";
+      
+      const logSteps = [
+        `[${new Date().toLocaleTimeString()}] INGESTION_GATEWAY: Ingested event payload for ${currentAgent.name}...`,
+        `[${new Date().toLocaleTimeString()}] CONTEXT_EXPANDER: Grounding against vector store & domain policy...`,
+        `[${new Date().toLocaleTimeString()}] TOOL_CALL_SANDBOX: Dispatched Firecracker MicroVM execution...`,
+        `[${new Date().toLocaleTimeString()}] SYNTHESIZER_DAG: Evaluated safety constraints and generated response...`,
+        `[${new Date().toLocaleTimeString()}] STRIPE_SETTLEMENT: Verified value token; firing webhook...`
+      ];
+
+      for (let i = 0; i < logSteps.length; i++) {
+        await new Promise(r => setTimeout(r, 80));
+        terminal.innerHTML += `<div>${logSteps[i]}</div>`;
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+
+      try {
+        const res = await fetch(`/api/agents/${currentAgent.id}/simulate`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        // Render completed output
+        document.getElementById('outputDisplay').innerText = JSON.stringify(data.output, null, 2);
+        document.getElementById('webhookInspector').innerText = JSON.stringify(data.stripeWebhookPayload, null, 2);
+        document.getElementById('latencyTimer').innerText = `${data.executionTimeMs}ms`;
+
+        // Update Right Panel Ledger
+        document.getElementById('lastTxAmount').innerText = `$${data.transaction.amount.toFixed(2)}`;
+        document.getElementById('lastTxLabel').innerText = data.transaction.label;
+        document.getElementById('lastTxToken').innerText = data.transaction.txId;
+        document.getElementById('lastStripeCharge').innerText = data.transaction.stripeChargeId;
+
+        // Finish Stepper
+        renderStepper(true);
+        document.getElementById('dagStatus').innerText = "RESOLVED";
+        document.getElementById('dagStatus').className = "px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+
+        // Refresh Metrics
+        await loadMetrics();
+
+      } catch (err) {
+        console.error("Simulation error:", err);
+      } finally {
+        isRunning = false;
+        runBtn.disabled = false;
+        runBtn.innerHTML = `
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Run Live Demo
+        `;
+      }
+    }
+
+    function renderTxHistory(txs) {
+      const container = document.getElementById('txHistory');
+      if (!txs || txs.length === 0) {
+        container.innerHTML = `<span class="text-slate-500 text-[10px]">// No transactions recorded yet.</span>`;
+        return;
+      }
+      container.innerHTML = txs.map(t => `
+        <div class="flex items-center justify-between py-1 border-b border-slate-800/60 text-[10px]">
+          <div class="truncate max-w-[130px]">
+            <span class="text-indigo-400 font-bold">#${t.agentId}</span>
+            <span class="text-slate-300 ml-1">${t.agentName}</span>
+          </div>
+          <span class="text-emerald-400 font-bold">+$${t.amount.toFixed(2)}</span>
+        </div>
+      `).join('');
+    }
+
+    function switchTab(tab) {
+      document.getElementById('contentDemo').classList.toggle('hidden', tab !== 'demo');
+      document.getElementById('contentCode').classList.toggle('hidden', tab !== 'code');
+      document.getElementById('contentArch').classList.toggle('hidden', tab !== 'arch');
+
+      const tabs = ['Demo', 'Code', 'Arch'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab${t}`);
+        const isCurrent = t.toLowerCase() === tab;
+        btn.className = isCurrent 
+          ? 'pb-2.5 px-3 border-b-2 border-indigo-500 text-indigo-400 font-semibold transition-colors'
+          : 'pb-2.5 px-3 border-b-2 border-transparent text-slate-400 hover:text-white transition-colors';
+      });
+    }
+
+    function exportCurrentProject() {
+      if (!currentAgent) return;
+      window.location.href = `/api/export/${currentAgent.id}`;
+    }
+
+    function copyOutput() {
+      const text = document.getElementById('outputDisplay').innerText;
+      navigator.clipboard.writeText(text);
+      alert("Output payload copied to clipboard!");
+    }
+
+    async function resetAll() {
+      await fetch('/api/reset', {method: 'POST'});
+      await loadMetrics();
+      if (currentAgent) selectAgent(currentAgent.id);
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>

@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>50 Real-Time Revenue AI Agents - Interactive Portfolio</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Custom scrollbar for clean dashboard feel */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--background, #0f172a); }
+    ::-webkit-scrollbar-thumb { background: var(--border, #334155); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground, #64748b); }
+  </style>
+</head>
+<body class="bg-[var(--background,#090d16)] text-[var(--foreground,#f8fafc)] min-h-screen antialiased p-4 md:p-8">
+
+  <!-- Main Container -->
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Section -->
+    <header class="bg-[var(--card,#111827)] border border-[var(--border,#1f2937)] rounded-2xl p-6 shadow-xl relative overflow-hidden">
+      <div class="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              ● 50 Active Agent Architectures
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/15 text-indigo-400 border border-indigo-500/30">
+              Real-Time Monetization Ready
+            </span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-[var(--foreground,#f8fafc)]">
+            Autonomous AI Agent Business Portfolio
+          </h1>
+          <p class="text-[var(--muted-foreground,#94a3b8)] text-sm mt-1 max-w-2xl">
+            Explore 50 production-ready LLM agent concepts engineered to generate revenue at the moment of value creation—via automated commissions, micro-metering, and instant settlement.
+          </p>
+        </div>
+
+        <!-- Quick Stats Pill Box -->
+        <div class="grid grid-cols-3 gap-3 bg-[var(--background,#0a0f1d)] border border-[var(--border,#1e293b)] rounded-xl p-3 text-center">
+          <div class="px-3">
+            <div class="text-xl font-bold text-indigo-400" id="totalCount">50</div>
+            <div class="text-xs text-[var(--muted-foreground,#94a3b8)]">Total Agents</div>
+          </div>
+          <div class="px-3 border-x border-[var(--border,#1e293b)]">
+            <div class="text-xl font-bold text-emerald-400">10</div>
+            <div class="text-xs text-[var(--muted-foreground,#94a3b8)]">Categories</div>
+          </div>
+          <div class="px-3">
+            <div class="text-xl font-bold text-amber-400" id="visibleCount">50</div>
+            <div class="text-xs text-[var(--muted-foreground,#94a3b8)]">Filtered</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Filters & Search Toolbar -->
+    <section class="bg-[var(--card,#111827)] border border-[var(--border,#1f2937)] rounded-xl p-4 shadow-md space-y-4">
+      <div class="flex flex-col md:flex-row gap-3">
+        <!-- Search Input -->
+        <div class="relative flex-1">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--muted-foreground,#94a3b8)]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+          <input type="text" id="searchInput" placeholder="Search by name, keyword, target audience, or use case..." 
+            class="w-full pl-10 pr-4 py-2 bg-[var(--background,#090d16)] border border-[var(--border,#1e293b)] rounded-lg text-sm text-[var(--foreground,#f8fafc)] placeholder-[var(--placeholder,#64748b)] focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <!-- Difficulty Dropdown -->
+        <select id="difficultyFilter" class="bg-[var(--background,#090d16)] border border-[var(--border,#1e293b)] rounded-lg px-3 py-2 text-sm text-[var(--foreground,#f8fafc)] focus:outline-none focus:border-indigo-500">
+          <option value="All">All Difficulties</option>
+          <option value="Easy">Easy MVP</option>
+          <option value="Medium">Medium MVP</option>
+          <option value="Hard">Hard MVP</option>
+        </select>
+
+        <!-- Revenue Model Dropdown -->
+        <select id="revModelFilter" class="bg-[var(--background,#090d16)] border border-[var(--border,#1e293b)] rounded-lg px-3 py-2 text-sm text-[var(--foreground,#f8fafc)] focus:outline-none focus:border-indigo-500">
+          <option value="All">All Revenue Models</option>
+          <option value="Commission">Performance Commission</option>
+          <option value="Micro-fee">Micro-fee per Task</option>
+          <option value="Fixed">Fixed / Per-Dossier</option>
+          <option value="Lead Bounty">Lead Bounty / Transfer</option>
+          <option value="Rev-Share">Cost-Savings Share</option>
+        </select>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1" id="categoryPills">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Agent Cards Grid -->
+    <main>
+      <div id="agentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Dynamic Agent Cards will render here -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden text-center py-16 bg-[var(--card,#111827)] border border-[var(--border,#1f2937)] rounded-xl">
+        <svg class="w-12 h-12 mx-auto text-[var(--muted-foreground,#64748b)] mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <h3 class="text-base font-semibold text-[var(--foreground,#f8fafc)]">No agents match your criteria</h3>
+        <p class="text-xs text-[var(--muted-foreground,#94a3b8)] mt-1">Try resetting your search query or selecting "All" categories.</p>
+        <button onclick="resetFilters()" class="mt-4 px-3 py-1.5 text-xs font-medium bg-indigo-600 text-white rounded-lg hover:bg-indigo-500">Reset Filters</button>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Detail / Mock UI Modal -->
+  <div id="agentModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden">
+    <div class="bg-[var(--card,#111827)] border border-[var(--border,#1f2937)] rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-150">
+      
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-[var(--border,#1f2937)] flex items-start justify-between bg-[var(--background,#090d16)]/50">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span id="modalCategoryBadge" class="px-2 py-0.5 rounded text-xs font-semibold bg-indigo-500/15 text-indigo-400"></span>
+            <span id="modalDifficultyBadge" class="px-2 py-0.5 rounded text-xs font-semibold"></span>
+            <span id="modalRevTypeBadge" class="px-2 py-0.5 rounded text-xs font-semibold bg-emerald-500/15 text-emerald-400"></span>
+          </div>
+          <h2 id="modalAgentName" class="text-xl font-bold text-[var(--foreground,#f8fafc)]"></h2>
+          <p id="modalAgentConcept" class="text-xs text-[var(--muted-foreground,#94a3b8)] mt-0.5"></p>
+        </div>
+        <button onclick="closeModal()" class="text-[var(--muted-foreground,#94a3b8)] hover:text-white p-1 rounded-lg hover:bg-[var(--background,#090d16)]">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-6 overflow-y-auto space-y-6 text-sm">
+
+        <!-- High Level Use Case Box -->
+        <div class="bg-indigo-950/20 border border-indigo-500/25 rounded-xl p-4">
+          <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            Primary Commercial Use Case
+          </div>
+          <p id="modalUseCase" class="text-xs text-indigo-100/90 leading-relaxed"></p>
+        </div>
+
+        <!-- Target Users & Real-Time Revenue -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-[var(--background,#090d16)] border border-[var(--border,#1e293b)] rounded-xl p-4">
+            <div class="text-xs font-semibold text-[var(--muted-foreground,#94a3b8)] uppercase tracking-wider mb-1">Target Paying Customer</div>
+            <div id="modalTargetUsers" class="text-xs font-medium text-[var(--foreground,#f8fafc)]"></div>
+          </div>
+          <div class="bg-[var(--background,#090d16)] border border-[var(--border,#1e293b)] rounded-xl p-4">
+            <div class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">Real-Time Revenue Mechanics</div>
+            <div id="modalRevenueModel" class="text-xs font-medium text-emerald-200"></div>
+          </div>
+        </div>
+
+        <!-- Demo Walkthrough Scenario -->
+        <div class="space-y-2">
+          <div class="text-xs font-semibold text-[var(--foreground,#f8fafc)] uppercase tracking-wider">High-Level Demo Walkthrough</div>
+          <div id="modalDemoSteps" class="bg-[var(--background,#090d16)] border border-[var(--border,#1e293b)] rounded-xl p-4 space-y-2"></div>
+        </div>
+
+        <!-- Interactive Simulated UI Mockup Preview -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-[var(--foreground,#f8fafc)] uppercase tracking-wider">Simulated Agent UI & Wireframe</span>
+            <span class="text-[11px] text-[var(--muted-foreground,#94a3b8)]">Interactive Interface Prototype</span>
+          </div>
+          <div id="modalMockUIContainer" class="bg-slate-950 border border-slate-800 rounded-xl p-4 shadow-inner">
+            <!-- Rendered dynamic mock UI component -->
+          </div>
+        </div>
+
+        <!-- Compliance & Legal Risk Box -->
+        <div class="bg-amber-950/20 border border-amber-500/30 rounded-xl p-4">
+          <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            Compliance & Regulatory Considerations
+          </div>
+          <p id="modalCompliance" class="text-xs text-amber-200/90 leading-relaxed"></p>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-[var(--border,#1f2937)] bg-[var(--background,#090d16)]/50 flex justify-end">
+        <button onclick="closeModal()" class="px-4 py-1.5 bg-[var(--border,#1f2937)] hover:bg-slate-700 text-xs font-medium rounded-lg text-white">Close Window</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Agent Database & JavaScript Logic -->
+  <script>
+    const AGENTS = [
+      // CATEGORY 1: E-COMMERCE & RETAIL
+      {
+        id: 1,
+        name: "CartRescue Agent",
+        category: "E-Commerce",
+        concept: "Intercepts high-intent cart abandonment sessions via real-time conversational triggers, resolving doubts and dynamically offering authorized personalized bundles.",
+        useCase: "Recovers abandoned high-value carts on Shopify/WooCommerce stores right as the user moves to exit, answering delivery/sizing questions and closing orders on the spot.",
+        targetUsers: "Shopify & WooCommerce DTC Merchants",
+        revenueModel: "8-12% commission on recovered cart values logged via checkout webhook.",
+        revenueType: "Commission",
+        difficulty: "Medium",
+        demoSteps: [
+          "Shopper hesitates on $185 cart for 45s and moves cursor toward browser exit.",
+          "Agent triggers subtle slide-in banner: 'Unsure about delivery to Chicago?'",
+          "Shopper types: 'Will this arrive before Friday?'",
+          "Agent verifies FedEx API: 'Express delivery arrives Thursday. I have applied free express shipping to your cart!'",
+          "Shopper converts; $185 checkout completes; Agent takes $18.50 cut."
+        ],
+        mockUIDesc: "Live visitor session monitor, intent score gauge, real-time recovered revenue ticker ($1,420 today), and max-discount slider.",
+        compliance: "GDPR/CCPA cookie consent; FTC rules against deceptive countdown clocks or false scarcity.",
+        simulatedUI: {
+          type: "ecommerce",
+          metricLabel: "Recovered Cart Revenue",
+          metricValue: "$1,840.50",
+          feeEarned: "$184.05",
+          liveBadge: "Active Session Intercepted",
+          actionBtn: "Trigger Instant Free Express Offer"
+        }
+      },
+      {
+        id: 2,
+        name: "ListingPulse",
+        category: "E-Commerce",
+        concept: "Monitors competitor stockouts and keyword rank volatility to autonomously rewrite product titles and bullet points.",
+        useCase: "Allows Amazon FBA sellers to instantly siphon traffic when a top competitor runs out of stock by adjusting listings within 5 minutes.",
+        targetUsers: "Amazon FBA & Walmart Marketplace Sellers",
+        revenueModel: "$0.25 per listing rewrite deployed + $1.00 per competitor stockout captured.",
+        revenueType: "Micro-fee",
+        difficulty: "Medium",
+        demoSteps: [
+          "Competitor runs out of stock in 'Memory Foam Pillow'.",
+          "ListingPulse flags stockout in 4 mins via Amazon SP-API.",
+          "Agent rewrites seller's copy to highlight 'Guaranteed In-Stock & 1-Day Prime Delivery'.",
+          "Seller auto-pilot approval pushes update to Amazon.",
+          "Seller gets 45 surge orders; $1.00 micro-fee charged to Stripe."
+        ],
+        mockUIDesc: "3-column console: ASIN health radar, Live Amazon copy vs Agent proposed diff, and one-click Amazon push button.",
+        compliance: "Amazon Selling Partner policies against keyword stuffing and prohibited medical/safety claims.",
+        simulatedUI: {
+          type: "marketplace",
+          metricLabel: "Stockout Surges Exploited",
+          metricValue: "14 Today",
+          feeEarned: "$17.50",
+          liveBadge: "Competitor ASIN OOS",
+          actionBtn: "Deploy Optimized Bullet Points"
+        }
+      },
+      {
+        id: 3,
+        name: "VendorNudge",
+        category: "E-Commerce",
+        concept: "Ingests supplier invoices, benchmarks raw material prices against commodities indices, and drafts calibrated renegotiation demands.",
+        useCase: "Protects manufacturer and brand profit margins by systematically demanding price concessions whenever underlying raw materials drop.",
+        targetUsers: "Wholesale Brands & Physical Goods Manufacturers",
+        revenueModel: "15% contingency fee of validated invoice savings upon credit memo approval.",
+        revenueType: "Rev-Share",
+        difficulty: "Medium",
+        demoSteps: [
+          "Coffee roastery uploads $4.80/lb green bean invoice.",
+          "Agent detects Arabica futures dropped 12% over 60 days.",
+          "Agent drafts supplier email citing market indices and volume consistency.",
+          "Supplier issues $840 credit memo for next shipment.",
+          "Agent collects $126 fee (15%) from corporate card."
+        ],
+        mockUIDesc: "Procurement pipeline, commodity index tracker, invoice PDF dropzone, and YTD realized savings odometer ($38,450).",
+        compliance: "Nondisclosure Agreements (NDAs) covering confidential supplier pricing schedules.",
+        simulatedUI: {
+          type: "finance",
+          metricLabel: "Total Invoice Savings Captured",
+          metricValue: "$12,340.00",
+          feeEarned: "$1,851.00",
+          liveBadge: "Supplier Credit Approved",
+          actionBtn: "Authorize 15% Savings Fee ($126)"
+        }
+      },
+      {
+        id: 4,
+        name: "ReturnShield",
+        category: "E-Commerce",
+        concept: "Evaluates return photos and reason codes in real time, offering instant keep-and-partial-refund settlements to eliminate reverse logistics waste.",
+        useCase: "Saves e-commerce stores expensive reverse freight fees on low-margin or bulky goods by settling with customers instantly.",
+        targetUsers: "Apparel, Furniture & Home Goods Retailers",
+        revenueModel: "$0.50 per automated return triage + $3.00 bonus per avoided return shipment.",
+        revenueType: "Micro-fee",
+        difficulty: "Easy",
+        demoSteps: [
+          "Customer uploads photo of $60 rug with minor thread fray.",
+          "ReturnShield estimates reverse freight costs $19.",
+          "Offers customer: 'Keep rug + get $25 instant refund, or return for $60.'",
+          "Customer accepts $25; store saves $19 shipping cost.",
+          "Merchant debited $3.50 fee; refund processed via Shopify."
+        ],
+        mockUIDesc: "Customer portal modal, visual defect confidence detector (94%), return cost vs offer tradeoff matrix, and acceptance rate gauge (68%).",
+        compliance: "EU statutory 14-day consumer withdrawal rights; fraud detection against serial returners.",
+        simulatedUI: {
+          type: "logistics",
+          metricLabel: "Return Shipments Avoided",
+          metricValue: "88 Avoided",
+          feeEarned: "$308.00",
+          liveBadge: "Customer Accepted Partial Refund",
+          actionBtn: "Issue $25 Instant Partial Refund"
+        }
+      },
+      {
+        id: 5,
+        name: "FlashDrop",
+        category: "E-Commerce",
+        concept: "Listens to live TikTok/Instagram/YouTube shopping streams, answers comments in real time, and pins dynamic checkout links synced with the speaker.",
+        useCase: "Enables live social commerce hosts to never miss a sales question while on camera, instantly putting checkout cards into viewer hands.",
+        targetUsers: "Live-Stream Creators & Boutique Retailers",
+        revenueModel: "2.5% affiliate commission on stream sales completed via agent-pinned links.",
+        revenueType: "Commission",
+        difficulty: "Hard",
+        demoSteps: [
+          "Host says: 'Notice the fleece lining on this jacket.'",
+          "Chat asks: 'What size is the model wearing?'",
+          "Agent listens via audio stream: '@Sarah She is 5 7 wearing Size M!'",
+          "Agent automatically pins Size M checkout card to stream overlay.",
+          "25 viewers purchase in 2 mins; Agent captures $60 cut from GMV."
+        ],
+        mockUIDesc: "Streamer HUD: Live video preview, intent-filtered comments, live sales ticker, and emergency mute toggle.",
+        compliance: "Platform bot automation policies on TikTok/Instagram; FTC affiliate disclosure mandates in live chat.",
+        simulatedUI: {
+          type: "social",
+          metricLabel: "Live Stream GMV Generated",
+          metricValue: "$4,290.00",
+          feeEarned: "$107.25",
+          liveBadge: "Audio Synced to SKU #402",
+          actionBtn: "Pin Product Card to Live Overlay"
+        }
+      },
+      {
+        id: 6,
+        name: "ReviewAlchemy",
+        category: "E-Commerce",
+        concept: "Scrapes verified 5-star customer reviews and autonomously transforms them into TikTok/Reels UGC scripts, storyboards, and audio ad packs.",
+        useCase: "Transforms real customer praise into ready-to-run social video ads within 60 seconds without hiring expensive creative agencies.",
+        targetUsers: "DTC Marketers & Performance Ad Agencies",
+        revenueModel: "$4.99 per generated creative ad pack (script + storyboard + voiceover).",
+        revenueType: "Fixed",
+        difficulty: "Easy",
+        demoSteps: [
+          "Skincare store receives 5-star review: 'Cleared my acne in 7 days!'",
+          "Agent structures 3-part UGC script: 3s Hook, Agitation, CTA.",
+          "Generates ElevenLabs voiceover and CapCut template storyboard.",
+          "Marketer clicks 'Download Ad Pack'.",
+          "Stripe micropayment of $4.99 charged instantly."
+        ],
+        mockUIDesc: "Review inbox, interactive script editor with hook virality score, video mockup player, and export button.",
+        compliance: "FTC endorsement guidelines ensuring authentic consumer representations.",
+        simulatedUI: {
+          type: "creative",
+          metricLabel: "Ad Packs Generated",
+          metricValue: "42 Packs",
+          feeEarned: "$209.58",
+          liveBadge: "5-Star Review Synthesized",
+          actionBtn: "Export Creative Pack ($4.99)"
+        }
+      },
+      {
+        id: 7,
+        name: "B2B QuoteBot",
+        category: "E-Commerce",
+        concept: "Parses custom wholesale RFQ emails and CAD/PDF specs, computes manufacturing margins against live material feeds, and issues binding quotes in 90s.",
+        useCase: "Allows custom manufacturers to beat competitors on turnaround speed, quoting custom packaging or machining RFQs before rivals open the email.",
+        targetUsers: "Custom Packaging Manufacturers & Machine Shops",
+        revenueModel: "$15 per generated binding quotation + 1% success fee upon customer deposit.",
+        revenueType: "Fixed",
+        difficulty: "Hard",
+        demoSteps: [
+          "Buyer emails 14-page PDF spec for 50,000 embossed cosmetic boxes.",
+          "QuoteBot extracts paperweight, die-cut details, and shipping zip.",
+          "Calculates live raw board costs and machine hours via ERP.",
+          "Issues branded formal PDF quote with 72-hour guarantee.",
+          "Shop billed $15; buyer pays deposit; 1% success fee captured."
+        ],
+        mockUIDesc: "Industrial ERP dashboard: Inbound RFQ queue, extracted spec table, target margin slider, and 1-click quote dispatch.",
+        compliance: "Commercial legal liability on binding price quotes; NDA protection on proprietary schematics.",
+        simulatedUI: {
+          type: "manufacturing",
+          metricLabel: "Binding Quotes Issued",
+          metricValue: "28 Quotes",
+          feeEarned: "$680.00",
+          liveBadge: "RFQ Synthesized in 54s",
+          actionBtn: "Issue Binding Quote PDF ($15)"
+        }
+      },
+
+      // CATEGORY 2: FREELANCE & CREATIVE
+      {
+        id: 8,
+        name: "ProposalSniper",
+        category: "Freelance & Agency",
+        concept: "Monitors freelance platforms and RFP feeds, assesses win probability, and drafts bespoke technical proposals within 3 minutes of posting.",
+        useCase: "Helps freelance developers and agencies win lucrative contracts by always being the first high-quality proposal in the client's inbox.",
+        targetUsers: "Freelance Developers & Digital Agencies",
+        revenueModel: "$1.50 per sent bid or credit pack ($29 for 25 bids) + 3% won deal fee.",
+        revenueType: "Micro-fee",
+        difficulty: "Easy",
+        demoSteps: [
+          "Upwork posts $4,000 job: 'Next.js 14 migration with Supabase'.",
+          "ProposalSniper matches freelancer's GitHub portfolio repos.",
+          "Drafts custom 250-word proposal addressing client constraints.",
+          "Freelancer clicks 'Approve & Send' on smartwatch.",
+          "Proposal lands first; $1.50 credit charged to user balance."
+        ],
+        mockUIDesc: "Incoming job radar with match score (98%), side-by-side pitch diff drawer, and one-tap submit floating button.",
+        compliance: "Upwork/freelance platform terms regarding automated bidding and anti-spam rules.",
+        simulatedUI: {
+          type: "freelance",
+          metricLabel: "Proposals Submitted",
+          metricValue: "64 Sent",
+          feeEarned: "$96.00",
+          liveBadge: "Match Score 98% (Next.js)",
+          actionBtn: "Submit Proposal to Client ($1.50)"
+        }
+      },
+      {
+        id: 9,
+        name: "ScopeGuard",
+        category: "Freelance & Agency",
+        concept: "Sits in Slack/Teams/email, detects client requests outside the signed Statement of Work, and politely drafts itemized Change Orders.",
+        useCase: "Eliminates unpaid agency scope creep by instantly converting casual client requests into approved, paid change orders.",
+        targetUsers: "Software Agencies & Web Consultants",
+        revenueModel: "5% transaction processing fee on all approved Change Orders paid via payment link.",
+        revenueType: "Commission",
+        difficulty: "Medium",
+        demoSteps: [
+          "Client in Slack: 'Can we also add multi-currency checkout?'",
+          "ScopeGuard verifies project SOW in vector DB (feature excluded).",
+          "Pings agency: 'Out-of-scope detected ($1,400 est). Send Change Order?'",
+          "Agency taps 'Yes'; ScopeGuard posts polite breakdown with Stripe link.",
+          "Client pays $1,400; ScopeGuard deducts $70 fee in real time."
+        ],
+        mockUIDesc: "Scope-creep detection log (Amber/Red flags), Change Order revenue tracker ($8,400 captured), and auto-draft toggle.",
+        compliance: "Binding contract modification validity; ESIGN Act compliance for digital authorization.",
+        simulatedUI: {
+          type: "agency",
+          metricLabel: "Scope Creep Captured",
+          metricValue: "$9,800.00",
+          feeEarned: "$490.00",
+          liveBadge: "Out-of-Scope Task Detected",
+          actionBtn: "Send Change Order Link to Client"
+        }
+      },
+      {
+        id: 10,
+        name: "AudioPolisher",
+        category: "Freelance & Agency",
+        concept: "Ingests raw audio, removes filler words, and generates show notes, timestamps, audiograms, and sponsor ad markers in real time.",
+        useCase: "Enables solo podcasters and creators to release high-production audio without spending 4 hours in editing software.",
+        targetUsers: "Podcasters, Voiceover Artists & YouTubers",
+        revenueModel: "Pay-as-you-go $0.15 per audio minute processed charged via Stripe.",
+        revenueType: "Micro-fee",
+        difficulty: "Medium",
+        demoSteps: [
+          "Podcaster uploads 45-minute raw .wav file.",
+          "Agent cuts filler words, normalizes audio levels, and extracts timestamps.",
+          "Generates 3 vertical video audiograms with animated captions.",
+          "User downloads production bundle in 4 minutes.",
+          "$6.75 charged immediately to saved credit card."
+        ],
+        mockUIDesc: "Waveform visualizer with yellow filler-word markers, show notes editor, and instant checkout export bar.",
+        compliance: "Audio copyright ownership; synthetic voice licensing disclosures.",
+        simulatedUI: {
+          type: "audio",
+          metricLabel: "Audio Minutes Processed",
+          metricValue: "1,240 Mins",
+          feeEarned: "$186.00",
+          liveBadge: "45-Min Waveform Ready",
+          actionBtn: "Process & Export Bundle ($6.75)"
+        }
+      },
+      {
+        id: 11,
+        name: "SubDocu",
+        category: "Freelance & Agency",
+        concept: "Translates messy subcontractor WhatsApp voice notes and photos into standardized construction daily logs and reconciles invoices.",
+        useCase: "Prevents construction overbilling and saves general contractors hours of field paperwork every evening.",
+        targetUsers: "General Contractors & Commercial Builders",
+        revenueModel: "$3.00 per processed and reconciled daily subcontractor packet.",
+        revenueType: "Fixed",
+        difficulty: "Medium",
+        demoSteps: [
+          "Drywaller voice note: 'Framed level 2, hung 40 sheetrock boards, 2 guys 8 hrs.'",
+          "Agent maps to CSI codes and logs billable hours.",
+          "Cross-references weekly invoice; flags 4-hour overbilling error.",
+          "Produces certified Daily Field Report PDF for the property developer.",
+          "GC account billed $3.00 per approved report."
+        ],
+        mockUIDesc: "Ruggedized mobile UI: Active jobsite map, subcontractor audio feed, discrepancy table, and 1-tap verify button.",
+        compliance: "OSHA field documentation compliance; state mechanic's lien record-keeping.",
+        simulatedUI: {
+          type: "construction",
+          metricLabel: "Field Packets Verified",
+          metricValue: "140 Packets",
+          feeEarned: "$420.00",
+          liveBadge: "4-Hour Discrepancy Flagged",
+          actionBtn: "Approve Daily Log & Report ($3.00)"
+        }
+      },
+      {
+        id: 12,
+        name: "LocalizationLeap",
+        category: "Freelance & Agency",
+        concept: "Ingests i18n JSON files, reads game lore/brand guidelines, and produces culturally nuanced translations while checking UI character limits.",
+        useCase: "Allows indie game and mobile app developers to ship international releases without UI text clipping or offensive translation errors.",
+        targetUsers: "Indie Game Developers & SaaS Publishers",
+        revenueModel: "$0.04 per translated word + $25 per validated localization build bundle.",
+        revenueType: "Micro-fee",
+        difficulty: "Easy",
+        demoSteps: [
+          "Dev uploads strings.json with 1,200 words containing gaming puns.",
+          "Agent produces Japanese/German copy fitting button constraints (max 28 chars).",
+          "Flags 3 culturally sensitive idioms and suggests safe alternatives.",
+          "Dev runs CI/CD export command.",
+          "Agent opens PR and charges $48 via GitHub Marketplace meter."
+        ],
+        mockUIDesc: "Localization matrix: Source string column with UI width constraint, language columns with character overflow alerts (Green/Red).",
+        compliance: "Regional content age rating guidelines (USK in Germany, CERO in Japan).",
+        simulatedUI: {
+          type: "dev",
+          metricLabel: "Strings Localized",
+          metricValue: "8,400 Words",
+          feeEarned: "$361.00",
+          liveBadge: "Zero UI Character Overflows",
+          actionBtn: "Commit Translations to Repo ($48)"
+        }
+      },
+      {
+        id: 13,
+        name: "GhostThread",
+        category: "Freelance & Agency",
+        concept: "Ingests raw voice notes from executives, extracts thought leadership insights, and schedules formatted LinkedIn posts and X threads.",
+        useCase: "Empowers busy tech CEOs and founders to maintain consistent, high-reach thought leadership without spending hours writing.",
+        targetUsers: "Founders, Tech Executives & Consultants",
+        revenueModel: "$120/mo base + $5 per approved, published high-performance post.",
+        revenueType: "Micro-fee",
+        difficulty: "Easy",
+        demoSteps: [
+          "Founder records 3-min voice note: 'Here is what enterprise buyers miss...'",
+          "Agent structures two LinkedIn angles (Storytelling vs Framework).",
+          "Pings founder on Telegram: 'Tap 1 for Angle A, 2 for Angle B.'",
+          "Founder taps 1; post scheduled via LinkedIn API.",
+          "$5 execution fee logged in founder's Stripe portal."
+        ],
+        mockUIDesc: "Executive portal & Telegram bot: Draft card deck, hook virality score, calendar scheduler, and monthly reach ROI tracker.",
+        compliance: "Social network automation terms; executive representation and corporate disclosure rules.",
+        simulatedUI: {
+          type: "executive",
+          metricLabel: "Executive Posts Published",
+          metricValue: "18 Posts",
+          feeEarned: "$90.00",
+          liveBadge: "Telegram Approval Received",
+          actionBtn: "Schedule to LinkedIn Live ($5.00)"
+        }
+      },
+      {
+        id: 14,
+        name: "DesignBrief AI",
+        category: "Freelance & Agency",
+        concept: "Conducts interactive intake interviews with creative clients to extract concrete specifications and references before project kickoff.",
+        useCase: "Saves design studios from vague client briefs, endless revision loops, and missed expectations before starting billable work.",
+        targetUsers: "Branding Studios & Web Design Agencies",
+        revenueModel: "$10 per completed, client-validated Creative Brief generated.",
+        revenueType: "Fixed",
+        difficulty: "Easy",
+        demoSteps: [
+          "Agency sends intake link to a new $15,000 rebranding client.",
+          "Agent conducts 10-min dynamic interview, gathering competitor dislikes and mood images.",
+          "Synthesizes 4-page Creative Brief PDF and Figma starter board.",
+          "Client digitally signs off on the brief constraints.",
+          "Agency charged $10 upon signed brief delivery."
+        ],
+        mockUIDesc: "Conversational intake form with image upload, agency brief pipeline, Figma starter generator, and ambiguity warning flags.",
+        compliance: "Intellectual property ownership of uploaded client assets and design constraints.",
+        simulatedUI: {
+          type: "design",
+          metricLabel: "Signed Briefs Delivered",
+          metricValue: "34 Briefs",
+          feeEarned: "$340.00",
+          liveBadge: "Client Signed Constraints",
+          actionBtn: "Generate Figma Board ($10.00)"
+        }
+      },
+
+      // CATEGORY 3: FINANCE & BILLING
+      {
+        id: 15,
+        name: "CloudLeak",
+        category: "Finance & Cost",
+        concept: "Analyzes live AWS/GCP telemetry, detects idle compute and unattached volumes, and opens ready-to-merge Terraform pull requests.",
+        useCase: "Stops runaway cloud hosting bills for tech startups by autonomously submitting infrastructure-as-code pull requests to downscale waste.",
+        targetUsers: "Tech Startups, DevOps Leads & Engineering Orgs",
+        revenueModel: "20% cut of documented monthly cloud savings verified via AWS Cost Explorer.",
+        revenueType: "Rev-Share",
+        difficulty: "Hard",
+        demoSteps: [
+          "Staging cluster runs 3 idle m5.4xlarge nodes at 2% CPU ($420/mo burn).",
+          "CloudLeak flags waste and generates Terraform PR to switch to spot instances.",
+          "DevOps engineer merges PR; cloud cost drops $360/mo.",
+          "AWS Cost Explorer verifies reduction on billing cycle.",
+          "CloudLeak automatically charges $72.00 (20%) via Stripe."
+        ],
+        mockUIDesc: "DevOps dark-mode dashboard: Money Burn Rate counter ($0.14/min), active waste alerts, and 1-click 'Merge PR to Save' buttons.",
+        compliance: "SOC2 compliance; read-only IAM security least-privilege with zero data exfiltration.",
+        simulatedUI: {
+          type: "devops",
+          metricLabel: "Cloud Burn Eliminated",
+          metricValue: "$4,850/mo",
+          feeEarned: "$970.00",
+          liveBadge: "Terraform PR Merged",
+          actionBtn: "Invoice 20% Verified Savings ($72)"
+        }
+      },
+      {
+        id: 16,
+        name: "ChasingDunning",
+        category: "Finance & Cost",
+        concept: "Monitors overdue invoices in QuickBooks/Xero, calculates debtor sensitivity, and sends escalating multi-channel payment reminders with 1-click links.",
+        useCase: "Accelerates cash collection for small service businesses without alienating valuable client relationships.",
+        targetUsers: "Small Businesses, Accounting Firms & Contractors",
+        revenueModel: "1.5% convenience fee on overdue invoices collected through embedded payment links.",
+        revenueType: "Commission",
+        difficulty: "Medium",
+        demoSteps: [
+          "Client invoice of $3,200 is 14 days overdue.",
+          "Agent reviews client communication patterns and payment reliability.",
+          "Dispatches polite email with embedded 1-click Apple Pay/ACH link.",
+          "Client clicks link and settles invoice in full.",
+          "Business receives $3,152; ChasingDunning takes $48.00 fee."
+        ],
+        mockUIDesc: "Aged debt buckets (0-30, 31-60, 60+), Live Recovery Feed, debtor sentiment gauge, and manual escalation toggle.",
+        compliance: "Fair Debt Collection Practices Act (FDCPA); SMS/WhatsApp automated communication opt-out rules.",
+        simulatedUI: {
+          type: "collections",
+          metricLabel: "Overdue Cash Collected",
+          metricValue: "$34,200.00",
+          feeEarned: "$513.00",
+          liveBadge: "Invoice Settled via Apple Pay",
+          actionBtn: "Collect 1.5% Settlement Fee ($48)"
+        }
+      },
+      {
+        id: 17,
+        name: "SaaSSnip",
+        category: "Finance & Cost",
+        concept: "Connects to corporate Google Workspace and credit card feeds, detects zombie licenses across Slack, Zoom, and Figma, and automates deprovisioning.",
+        useCase: "Prunes unnecessary monthly software subscriptions and deprovisions orphaned seats when contractors or employees leave.",
+        targetUsers: "Startup CFOs, IT Admins & Founders",
+        revenueModel: "25% share of the first year's validated recurring license savings.",
+        revenueType: "Rev-Share",
+        difficulty: "Medium",
+        demoSteps: [
+          "Connects to Google Workspace and Slack via OAuth.",
+          "Finds 18 former contractors occupying $25/mo Figma and $15/mo Slack seats (0 logins in 45 days).",
+          "Sends Slack alert to Admin: 'Deprovision 18 seats to save $720/month?'",
+          "Admin taps 'Confirm'; agent calls APIs to remove seats.",
+          "Saves $8,640/yr; SaaSSnip bills $180/mo for 12 months."
+        ],
+        mockUIDesc: "Connected SaaS apps list, zombie seats counter, potential annual savings ticker, and 1-click purge button.",
+        compliance: "Employee privacy rights; SOC2 corporate SSO security access controls.",
+        simulatedUI: {
+          type: "it",
+          metricLabel: "Zombie Seats Purged",
+          metricValue: "42 Seats",
+          feeEarned: "$2,160.00",
+          liveBadge: "18 Inactive Licenses Deprovisioned",
+          actionBtn: "Bill First Month Rev-Share ($180)"
+        }
+      },
+      {
+        id: 18,
+        name: "GrantFinder AI",
+        category: "Finance & Cost",
+        concept: "Scans federal/corporate non-dilutive grant databases, matches eligibility against a startup's deck, and drafts compliant grant proposals.",
+        useCase: "Helps deep-tech and climate startups secure non-dilutive government funding without paying $15,000 to grant consultant agencies.",
+        targetUsers: "Deep-Tech Founders, Climate Startups & Spin-offs",
+        revenueModel: "$49 per tailored application dossier generated + 3% contingent grant award fee.",
+        revenueType: "Fixed",
+        difficulty: "Hard",
+        demoSteps: [
+          "Clean-tech startup uploads 10-page paper on carbon capture.",
+          "Agent identifies 96% match with Department of Energy SBIR solicitation.",
+          "Generates technical narrative, budget justification, and commercialization plan.",
+          "Founder downloads ready-to-submit application dossier.",
+          "$49 charged instantly at export; agreement signed for 3% success fee."
+        ],
+        mockUIDesc: "Grant match radar chart, countdown calendar, document editor with word-limit compliance trackers, and export modal.",
+        compliance: "Federal grant submission truth-in-advertising and original research verification mandates.",
+        simulatedUI: {
+          type: "grants",
+          metricLabel: "Grant Proposals Drafted",
+          metricValue: "18 Dossiers",
+          feeEarned: "$882.00",
+          liveBadge: "SBIR Phase 1 Dossier Ready",
+          actionBtn: "Export Complete Grant Pack ($49)"
+        }
+      },
+      {
+        id: 19,
+        name: "TaxReceipt Concierge",
+        category: "Finance & Cost",
+        concept: "Scans bank transactions and inbox receipts in real time, classifies deductible expenses according to tax codes, and calculates tax savings.",
+        useCase: "Prevents independent contractors from losing thousands in unclaimed deductions while automating year-end Schedule C prep.",
+        targetUsers: "Freelancers, Creators & Gig Workers",
+        revenueModel: "$7.99/mo subscription or $0.50 micro-fee per verified deduction matched.",
+        revenueType: "Micro-fee",
+        difficulty: "Medium",
+        demoSteps: [
+          "User buys a $1,200 camera lens; bank alert triggers webhook.",
+          "Agent fetches PDF receipt from Gmail, classifies as 'Equipment Depreciation'.",
+          "Calculates instant tax savings of $360 and notifies user.",
+          "Logs item to structured Schedule C export sheet.",
+          "User charged $0.50 per deduction verification."
+        ],
+        mockUIDesc: "Swipable transaction card deck (Swipe Right = Business deduction), live estimated tax owed odometer, and Schedule C drawer.",
+        compliance: "IRS/HMRC bookkeeping rules; prominent legal disclaimer clarifying it is not certified CPA advice.",
+        simulatedUI: {
+          type: "tax",
+          metricLabel: "Tax Liability Reduced",
+          metricValue: "$4,120.00",
+          feeEarned: "$64.50",
+          liveBadge: "Section 179 Deduction Matched",
+          actionBtn: "Log $360 Tax Saving ($0.50 Fee)"
+        }
+      },
+      {
+        id: 20,
+        name: "AuditTrail",
+        category: "Finance & Cost",
+        concept: "Crawls Jira tickets and GitHub commits to isolate qualifying R&D tasks and compile audit-proof technical documentation for tax credits.",
+        useCase: "Unlocks tens of thousands in cash back for software companies through the R&D Tax Credit without disrupting developers.",
+        targetUsers: "Software Startups filing IRS Section 41 / UK R&D Tax Relief",
+        revenueModel: "5% of calculated R&D tax credit claim value generated upon finalized study export.",
+        revenueType: "Rev-Share",
+        difficulty: "Hard",
+        demoSteps: [
+          "Startup connects GitHub org and Jira workspace.",
+          "Agent analyzes 4,200 commits, isolating 1,100 qualifying R&D hours.",
+          "Synthesizes technical nexus summaries proving technological uncertainty.",
+          "Computes $48,000 qualifying R&D expenditure credit.",
+          "Generates IRS Form 6765 audit pack; bills $2,400 (5%) upon export."
+        ],
+        mockUIDesc: "Engineering audit view: Repo sync indicator, commits classified by qualifying R&D vs maintenance, and credit tally counter.",
+        compliance: "Strict tax authority scrutiny on R&D credits; substantial penalties for fraudulent classifications.",
+        simulatedUI: {
+          type: "rd",
+          metricLabel: "R&D Credits Identified",
+          metricValue: "$56,000.00",
+          feeEarned: "$2,800.00",
+          liveBadge: "Form 6765 Audit Packet Ready",
+          actionBtn: "Export Study & Settle 5% ($2,400)"
+        }
+      },
+
+      // CATEGORY 4: SALES & LEAD GENERATION
+      {
+        id: 21,
+        name: "ColdSignal",
+        category: "Sales & Leads",
+        concept: "Monitors job postings and tech stack shifts, drafting hyper-personalized outbound emails sent the moment a buying signal occurs.",
+        useCase: "Allows B2B SDRs to pitch prospects with perfect timing (e.g. right as they hire a leader or undergo an audit), driving 4x higher reply rates.",
+        targetUsers: "B2B Sales Reps (SDRs/AEs) & Lead Gen Agencies",
+        revenueModel: "$0.75 per verified delivered lead email + $15 per booked demo meeting.",
+        revenueType: "Lead Bounty",
+        difficulty: "Medium",
+        demoSteps: [
+          "Target enterprise posts job for 'Head of Cybersecurity'.",
+          "ColdSignal deduces pending SOC2/ISO27001 audit trigger.",
+          "Drafts concise 75-word email to VP of Engineering addressing audit timeline.",
+          "VP replies and schedules demo via embedded Calendly link.",
+          "ColdSignal charges SDR's account $15.00 for the confirmed demo."
+        ],
+        mockUIDesc: "SDR command center: Real-time signal stream, 1-click 'Approve & Dispatch' queue, and 'Meetings Booked Today' counter.",
+        compliance: "CAN-SPAM Act, GDPR regulations (opt-out links, legitimate interest basis for B2B contact).",
+        simulatedUI: {
+          type: "sdr",
+          metricLabel: "Meetings Booked Today",
+          metricValue: "4 Booked",
+          feeEarned: "$60.00",
+          liveBadge: "Buying Signal: Hiring Security Lead",
+          actionBtn: "Confirm Demo & Settle Fee ($15)"
+        }
+      },
+      {
+        id: 22,
+        name: "WebVisitor Reveal",
+        category: "Sales & Leads",
+        concept: "Identifies anonymous B2B website visitors via IP reverse-lookup and launches a personalized AI chat agent tailored to their industry.",
+        useCase: "Converts high-intent anonymous enterprise traffic into qualified sales leads before they leave the pricing or documentation page.",
+        targetUsers: "B2B SaaS Companies & Mid-Market Services",
+        revenueModel: "$25 per qualified sales lead delivered (email + verified role + company match).",
+        revenueType: "Lead Bounty",
+        difficulty: "Medium",
+        demoSteps: [
+          "Engineer from 500-person logistics firm visits API docs for 90s.",
+          "Agent resolves company domain: 'Noticed you are looking at logistics APIs from Acme Freight. Want our 3-min integration guide?'",
+          "Visitor enters business email to get SDK access.",
+          "Lead pushed to HubSpot CRM.",
+          "SaaS customer account charged $25 lead bounty automatically."
+        ],
+        mockUIDesc: "Live Traffic Radar map, conversation inspector with live visitor typing indicator, and converted corporate leads vault.",
+        compliance: "CCPA/GDPR compliance for IP tracking and business identity enrichment.",
+        simulatedUI: {
+          type: "reveal",
+          metricLabel: "B2B Leads Captured",
+          metricValue: "18 Leads",
+          feeEarned: "$450.00",
+          liveBadge: "Visitor: Acme Freight (500 emp)",
+          actionBtn: "Push Lead to HubSpot ($25 Bounty)"
+        }
+      },
+      {
+        id: 23,
+        name: "SpeedToLead",
+        category: "Sales & Leads",
+        concept: "Triggers an automated phone call or SMS within 15 seconds of a high-value web form submission, conducting natural voice qualification.",
+        useCase: "Eliminates the #1 killer of high-ticket inbound leads—slow follow-up—by calling homeowners or buyers within seconds of submission.",
+        targetUsers: "Solar Installers, Roofers, Mortgage Brokers & High-Ticket SaaS",
+        revenueModel: "$5.00 per completed live qualification call + $35 per warm-transferred lead.",
+        revenueType: "Lead Bounty",
+        difficulty: "Hard",
+        demoSteps: [
+          "Homeowner submits web form requesting residential solar quote.",
+          "Within 12 seconds, agent calls homeowner via Twilio with natural voice model.",
+          "Agent confirms roof age, electric bill ($280/mo), and homeownership.",
+          "Agent patches call to available sales specialist: 'Warm lead on line: John, $280 bill.'",
+          "Contractor account charged $35 warm transfer fee immediately."
+        ],
+        mockUIDesc: "Incoming lead queue with <15s countdown timer, live audio waveform visualizer, qualification checklist, and warm transfer routing toggle.",
+        compliance: "Telephone Consumer Protection Act (TCPA); express written consent on web forms; Do Not Call (DNC) registry compliance.",
+        simulatedUI: {
+          type: "call",
+          metricLabel: "Warm Transfers Completed",
+          metricValue: "12 Transfers",
+          feeEarned: "$420.00",
+          liveBadge: "Live Call: Connected in 11s",
+          actionBtn: "Execute Warm Transfer ($35 Fee)"
+        }
+      },
+      {
+        id: 24,
+        name: "PodcastPitcher",
+        category: "Sales & Leads",
+        concept: "Matches authors and founders with top-ranking niche podcasts, analyzes past host interviews, and writes personalized pitch angles.",
+        useCase: "Secures high-authority podcast interviews for founders and authors without spending $5,000/month on PR booking agencies.",
+        targetUsers: "Authors, Startup Founders & Executive Coaches",
+        revenueModel: "$150 per confirmed, scheduled podcast guest appearance.",
+        revenueType: "Lead Bounty",
+        difficulty: "Easy",
+        demoSteps: [
+          "AI founder signs up to promote new synthetic data product.",
+          "Agent scans 20 tech podcasts, transcribes recent episodes, and pitches angles referencing Ep #142.",
+          "Host replies: 'Love this angle, let's record Tuesday.'",
+          "Agent syncs with Calendly and books slot.",
+          "Credit card charged $150 upon verified calendar invite creation."
+        ],
+        mockUIDesc: "Media Outreach Board (Kanban: Researched, Pitched, Host Engaged, Booked), show listener stats, and booking fee modal.",
+        compliance: "Anti-spam email regulations; podcast host outreach disclosure standards.",
+        simulatedUI: {
+          type: "pr",
+          metricLabel: "Guest Appearances Booked",
+          metricValue: "6 Booked",
+          feeEarned: "$900.00",
+          liveBadge: "Host Confirmed Recording Date",
+          actionBtn: "Settle Booking Fee ($150)"
+        }
+      },
+      {
+        id: 25,
+        name: "ReviewBooster",
+        category: "Sales & Leads",
+        concept: "Detects when a local service job is completed in Square/Jobber, texts the customer a check-in, and drafts a keyword-rich 5-star review link.",
+        useCase: "Helps local contractors dominate local Google search rankings by turning completed jobs into verified 5-star reviews automatically.",
+        targetUsers: "Plumbers, Dentists, HVAC Contractors & Restaurants",
+        revenueModel: "$3.00 per customer-submitted Google review verified via Google Business Profile API.",
+        revenueType: "Micro-fee",
+        difficulty: "Easy",
+        demoSteps: [
+          "HVAC tech marks 'AC repair completed' on invoice in Jobber.",
+          "Agent texts customer: 'Hey Dave, how is the living room cooling feeling?'",
+          "Customer: 'Amazing! Super fast fix.'",
+          "Agent sends 1-click Google review link with drafted text mentioning 'emergency AC repair in Dallas'.",
+          "Customer posts review; Google API registers it; HVAC owner billed $3.00."
+        ],
+        mockUIDesc: "Local reputation hub: Big star rating badge (4.9★), SMS conversation stream, keyword cloud, and cost-per-review metrics widget.",
+        compliance: "Google Business Profile policies strictly prohibiting review gating or paying customers for reviews.",
+        simulatedUI: {
+          type: "reputation",
+          metricLabel: "Google Reviews Acquired",
+          metricValue: "38 This Month",
+          feeEarned: "$114.00",
+          liveBadge: "5-Star Review Verified on Maps",
+          actionBtn: "Record Verified Review Fee ($3.00)"
+        }
+      },
+      {
+        id: 26,
+        name: "AffiliateScout",
+        category: "Sales & Leads",
+        concept: "Continuously crawls digital content and YouTube descriptions, detects dead affiliate links, and hot-swaps them with higher-converting partners.",
+        useCase: "Recovers thousands in leaked commissions for media publishers whose old review articles point to out-of-stock products.",
+        targetUsers: "Affiliate Bloggers, Media Publishers & Review Sites",
+        revenueModel: "10% rev-share on incremental affiliate revenue recovered from repaired links.",
+        revenueType: "Rev-Share",
+        difficulty: "Medium",
+        demoSteps: [
+          "Tech review blog has dead Amazon link to gaming monitor (404 page).",
+          "AffiliateScout identifies dead link in 10 minutes.",
+          "Finds identical model on BestBuy (offering 4% commission instead of Amazon's 1.5%) and updates WordPress CMS.",
+          "User buys monitor generating $16 commission.",
+          "AffiliateScout automatically debits $1.60 fee from publisher balance."
+        ],
+        mockUIDesc: "Publisher Link Monitor: Broken links red-flag counter, commission comparison matrix, and live earnings rev-share widget.",
+        compliance: "FTC affiliate disclosure requirements; terms of service of affiliate networks (Amazon Associates, CJ).",
+        simulatedUI: {
+          type: "affiliate",
+          metricLabel: "Broken Links Repaired",
+          metricValue: "184 Links",
+          feeEarned: "$248.00",
+          liveBadge: "404 Swapped to BestBuy (4%)",
+          actionBtn: "Collect 10% Rev-Share ($1.60)"
+        }
+      },
+
+      // CATEGORY 5: CUSTOMER EXPERIENCE & RESOLUTION
+      {
+        id: 27,
+        name: "TicketZero",
+        category: "Customer Support",
+        concept: "Integrates into Zendesk/Intercom, reads incoming tickets, executes backend API actions, and resolves tickets without human involvement.",
+        useCase: "Cuts support overhead by 60% by handling deterministic customer operations (address updates, cancellations, status inquiries) in seconds.",
+        targetUsers: "High-Volume SaaS, Fintech Apps & E-Commerce Brands",
+        revenueModel: "$0.85 per ticket fully resolved without agent escalation.",
+        revenueType: "Micro-fee",
+        difficulty: "Medium",
+        demoSteps: [
+          "Fintech user submits ticket: 'I moved, update billing address to 404 Elm St.'",
+          "Agent verifies session, validates address via USPS API.",
+          "Calls billing database API to update address and creates audit log.",
+          "Sends confirmation email to user and marks ticket 'Closed'.",
+          "Fintech company billed $0.85; ticket marked as 'Zero-Touch Resolution'."
+        ],
+        mockUIDesc: "Resolution speedometer ('84% tickets resolved autonomously'), live ticket stream, human fallback drawer, and cost savings tally.",
+        compliance: "Data privacy regulations (GDPR/CCPA); multi-factor authentication verification before executing account modifications.",
+        simulatedUI: {
+          type: "support",
+          metricLabel: "Zero-Touch Tickets Solved",
+          metricValue: "640 Today",
+          feeEarned: "$544.00",
+          liveBadge: "Address Updated via API",
+          actionBtn: "Mark Ticket Resolved ($0.85)"
+        }
+      },
+      {
+        id: 28,
+        name: "ChurnBuster Live",
+        category: "Customer Support",
+        concept: "Triggers the moment a SaaS customer clicks 'Cancel', conducts an empathetic conversational exit interview, and negotiates custom pause plans.",
+        useCase: "Stops SaaS subscription churn at the exact point of exit by dynamically saving users with pauses or plan downgrades.",
+        targetUsers: "B2B & B2C Subscription Software Companies",
+        revenueModel: "15% of retained monthly subscription value billed immediately upon successful customer save.",
+        revenueType: "Commission",
+        difficulty: "Easy",
+        demoSteps: [
+          "Customer paying $99/mo clicks 'Cancel Plan' on project management tool.",
+          "ChurnBuster opens in-flow modal: 'Before you go, what was the biggest blocker?'",
+          "Customer: 'Too expensive for our slow season.'",
+          "Agent: 'We can switch you to our Dormant Plan for $19/mo for 3 months to preserve your data.'",
+          "Customer accepts; subscription updated; SaaS provider charged $14.85 save fee."
+        ],
+        mockUIDesc: "Live cancellation attempts ticker, churn reason pie chart, saved customers roster with LTV, and discount authorization slider.",
+        compliance: "FTC 'Click to Cancel' rules and California auto-renewal laws (no deceptive cancellation barriers or dark patterns).",
+        simulatedUI: {
+          type: "retention",
+          metricLabel: "Subscriptions Saved",
+          metricValue: "28 Saved",
+          feeEarned: "$415.80",
+          liveBadge: "Customer Switched to Dormant Plan",
+          actionBtn: "Record 15% Save Commission ($14.85)"
+        }
+      },
+      {
+        id: 29,
+        name: "NightWatch",
+        category: "Customer Support",
+        concept: "Manages after-hours emergency calls for property managers, distinguishing true emergencies from routine issues and dispatching on-call trades.",
+        useCase: "Gives property managers uninterrupted sleep while guaranteeing that genuine tenant emergencies (burst pipes) get dispatched immediately.",
+        targetUsers: "Property Management Firms & Trade Contractors",
+        revenueModel: "$12 per emergency dispatch coordinated + $2 per screened non-emergency ticket.",
+        revenueType: "Micro-fee",
+        difficulty: "Medium",
+        demoSteps: [
+          "Tenant calls emergency line at 2:30 AM reporting water gushing from ceiling.",
+          "NightWatch assesses voice call, verifies flood damage threat, and guides water shut-off.",
+          "Calls on-call emergency plumber via Twilio with audio briefing and tenant contact.",
+          "Sends dispatch confirmation SMS to property manager.",
+          "Property manager account debited $12.00 for the automated emergency dispatch."
+        ],
+        mockUIDesc: "High-contrast night mode UI: Active calls panel (Critical Red vs Non-urgent Green), contractor roster, and dispatch log.",
+        compliance: "Emergency call disclaimer (system is not 911 / emergency services); recording consent disclosures.",
+        simulatedUI: {
+          type: "dispatch",
+          metricLabel: "Night Emergencies Dispatched",
+          metricValue: "8 Dispatches",
+          feeEarned: "$96.00",
+          liveBadge: "Emergency Plumber Dispatched 2:32 AM",
+          actionBtn: "Confirm Dispatch Billing ($12.00)"
+        }
+      },
+      {
+        id: 30,
+        name: "Multilingual Concierge",
+        category: "Customer Support",
+        concept: "Serves as a 24/7 automated WhatsApp concierge for vacation rentals and hotels, handling check-ins, local tips, and tour upsells in 40+ languages.",
+        useCase: "Provides international travelers with instant 5-star hospitality assistance while creating automated upsell revenue for property hosts.",
+        targetUsers: "Boutique Hotels, Airbnb Superhosts & Luxury Rentals",
+        revenueModel: "$1.00 per guest stay + 10% commission on booked tour/dining reservations.",
+        revenueType: "Commission",
+        difficulty: "Easy",
+        demoSteps: [
+          "French guest at vacation rental in Mexico texts: 'Le code du portail ne fonctionne pas.'",
+          "Agent replies in French with correct gate keypad instructions.",
+          "Agent suggests: 'Would you like a private mezcal tasting session booked for tomorrow?'",
+          "Guest confirms 7 PM slot ($80).",
+          "Agent books session; host collects $80 and pays agent $8.00 commission."
+        ],
+        mockUIDesc: "Active guest room cards with language flags, guest sentiment indicator, upsell revenue tracker, and smart lock integration status.",
+        compliance: "Guest data privacy; GDPR compliance for international travelers; secure handling of door access codes.",
+        simulatedUI: {
+          type: "hospitality",
+          metricLabel: "Tour & Dining Upsells",
+          metricValue: "$1,450.00",
+          feeEarned: "$145.00",
+          liveBadge: "Guest Booked Mezcal Tasting",
+          actionBtn: "Collect 10% Upsell Fee ($8.00)"
+        }
+      },
+      {
+        id: 31,
+        name: "BugTriage AI",
+        category: "Customer Support",
+        concept: "Ingests Sentry/Datadog crash reports, reproduces errors in a virtual sandbox, and drafts tested GitHub PRs with proposed bug fixes.",
+        useCase: "Saves software development teams dozens of engineering hours each sprint by turning production exceptions into tested PRs automatically.",
+        targetUsers: "Software Startups & Open-Source Maintainers",
+        revenueModel: "$2.00 per verified, deduplicated bug report with minimal reproducible example and patch.",
+        revenueType: "Micro-fee",
+        difficulty: "Hard",
+        demoSteps: [
+          "Production Sentry alert fires for unhandled TypeError during checkout.",
+          "BugTriage AI analyzes stack trace, isolates culprit commit from git history.",
+          "Generates minimal reproduction unit test and writes 4-line fix PR.",
+          "Posts formatted PR link directly into engineering Slack channel.",
+          "Engineering organization billed $2.00 per triage resolution."
+        ],
+        mockUIDesc: "Crash incident stream ranked by user impact, 'Instant PR Ready' badges, side-by-side stack trace vs code diff, and CI test status.",
+        compliance: "Data sanitization (stripping user passwords and PII from crash dumps before LLM processing).",
+        simulatedUI: {
+          type: "engineering",
+          metricLabel: "Crash PRs Generated",
+          metricValue: "44 PRs",
+          feeEarned: "$88.00",
+          liveBadge: "Minimal Unit Test Passing",
+          actionBtn: "Merge Pull Request ($2.00 Fee)"
+        }
+      },
+
+      // CATEGORY 6: REAL ESTATE & PROPERTY
+      {
+        id: 32,
+        name: "LeasePencil",
+        category: "Real Estate",
+        concept: "Ingests 80+ page commercial lease PDFs, extracts key clauses (CAM fees, escalation dates, termination rights), and formats executive abstracts.",
+        useCase: "Accelerates commercial property deals by turning dense 90-page legal leases into structured cash-flow models and summaries in 60 seconds.",
+        targetUsers: "Commercial Real Estate Brokers, Property Managers & Tenants",
+        revenueModel: "$39 per abstracted commercial lease document.",
+        revenueType: "Fixed",
+        difficulty: "Medium",
+        demoSteps: [
+          "Broker uploads 95-page retail lease agreement PDF.",
+          "Agent extracts base rent schedule, tenant improvement allowances, and operating expense escalations.",
+          "Calculates projected 5-year cash-flow schedule in Excel.",
+          "Produces 3-page executive summary PDF with flagged unfavorable clauses.",
+          "Broker pays $39 via instant Stripe payment to unlock download."
+        ],
+        mockUIDesc: "Split PDF viewer: Scanned lease PDF with highlighted text on left, structured abstract cards on right, and 'Download Excel Model' button.",
+        compliance: "Professional liability disclaimer stating abstract is an analytical aid, not formal legal opinion.",
+        simulatedUI: {
+          type: "cre",
+          metricLabel: "Leases Abstracted",
+          metricValue: "26 Leases",
+          feeEarned: "$1,014.00",
+          liveBadge: "95-Page Lease Abstracted in 42s",
+          actionBtn: "Unlock Abstract & Excel Model ($39)"
+        }
+      },
+      {
+        id: 33,
+        name: "ZoningSherlock",
+        category: "Real Estate",
+        concept: "Cross-references municipal zoning bylaws, GIS parcel maps, and building codes to determine permissible developments (ADU eligibility, height limits).",
+        useCase: "Enables property developers and flippers to instantly evaluate land potential and zoning feasibility before placing an offer.",
+        targetUsers: "Real Estate Developers, Architects & Home Flippers",
+        revenueModel: "$75 per automated zoning feasibility report.",
+        revenueType: "Fixed",
+        difficulty: "Hard",
+        demoSteps: [
+          "Investor enters address: '1424 Oak St, Austin, TX'.",
+          "Agent queries municipal GIS layer and current land development code.",
+          "Evaluates lot size (7,200 sq ft) against ADU ordinances.",
+          "Generates 6-page Feasibility Dossier showing max building footprint, setbacks, and parking rules.",
+          "User pays $75 via Apple Pay; report downloads immediately."
+        ],
+        mockUIDesc: "Interactive satellite parcel map with highlighted setback boundaries, layer toggles, and 'Generate Dossier ($75)' button.",
+        compliance: "Municipal regulatory disclaimers; formal permits require licensed architectural/engineering stamps.",
+        simulatedUI: {
+          type: "zoning",
+          metricLabel: "Zoning Feasibility Reports",
+          metricValue: "18 Reports",
+          feeEarned: "$1,350.00",
+          liveBadge: "ADU Construction Permitted",
+          actionBtn: "Download Certified Dossier ($75)"
+        }
+      },
+      {
+        id: 34,
+        name: "TenantScreener",
+        category: "Real Estate",
+        concept: "Parses rental applications, verifies uploaded paystubs via OCR forensics, confirms employer legitimacy, and calculates rent-to-income ratios.",
+        useCase: "Protects independent landlords from forged PDF paystubs and unqualified tenants with instant forensic verification.",
+        targetUsers: "Independent Landlords & Small Property Managers",
+        revenueModel: "$25 per applicant screening packet (paid by applicant or landlord).",
+        revenueType: "Fixed",
+        difficulty: "Medium",
+        demoSteps: [
+          "Prospective tenant submits paystubs for a $2,200/mo apartment.",
+          "Agent performs forensics to detect forged PDF paystubs (font mismatch, metadata inconsistency).",
+          "Confirms employer phone number and verifies 3.2x income coverage ratio.",
+          "Delivers clean verification card to landlord with recommendation score.",
+          "Landlord or applicant billed $25 via Stripe checkout."
+        ],
+        mockUIDesc: "Applicant roster sorted by income ratio, document authenticity badge (99% authentic), summary checklist, and 1-click approve/decline.",
+        compliance: "Fair Housing Act compliance (must prevent discriminatory filtering); FCRA rules if credit checks are included.",
+        simulatedUI: {
+          type: "screening",
+          metricLabel: "Applicants Screened",
+          metricValue: "32 Applicants",
+          feeEarned: "$800.00",
+          liveBadge: "Paystub Authenticity: 99.4%",
+          actionBtn: "Generate Landlord Scorecard ($25)"
+        }
+      },
+      {
+        id: 35,
+        name: "StagingVision",
+        category: "Real Estate",
+        concept: "Takes photos of empty or dated rooms, removes clutter, and renders photorealistic staged interiors with shoppable furniture links.",
+        useCase: "Helps realtors make vacant properties look warm and inviting online at a fraction of the cost of physical home staging.",
+        targetUsers: "Real Estate Listing Agents & Home Sellers",
+        revenueModel: "$12 per staged room photo + affiliate commissions on linked furniture items.",
+        revenueType: "Fixed",
+        difficulty: "Medium",
+        demoSteps: [
+          "Realtor uploads photo of empty living room.",
+          "Selects style: 'Modern Scandinavian Luxury'.",
+          "Agent renders photorealistic high-res staging with sofa, rug, and lighting in 30 seconds.",
+          "Realtor approves and downloads photo for MLS listing.",
+          "Realtor charged $12; viewers clicking staging tour can buy the exact furniture."
+        ],
+        mockUIDesc: "Before/After slider viewer, style selector chips (Mid-century, Scandinavian, Industrial), furniture catalog overlay, and 4K download button.",
+        compliance: "MLS disclosure rules requiring virtual staging disclosures on listing photos.",
+        simulatedUI: {
+          type: "staging",
+          metricLabel: "Rooms Staged in 4K",
+          metricValue: "52 Rooms",
+          feeEarned: "$624.00",
+          liveBadge: "Render Completed in 28s",
+          actionBtn: "Download 4K MLS Photo ($12.00)"
+        }
+      },
+
+      // CATEGORY 7: EDUCATION & SKILLS
+      {
+        id: 36,
+        name: "OralExam AI",
+        category: "Education",
+        concept: "Conducts real-time spoken voice examinations with students, evaluates CEFR language fluency, and generates certified scorecards.",
+        useCase: "Enables language academies and ESL students to practice and certify spoken English fluency without paying human tutors $40/hour.",
+        targetUsers: "Language Schools, ESL Students & Recruiters",
+        revenueModel: "$9.99 per 15-minute proctored speaking assessment and diagnostic report.",
+        revenueType: "Fixed",
+        difficulty: "Medium",
+        demoSteps: [
+          "Student connects headset and begins conversational voice exam with agent.",
+          "Agent poses dynamic questions: 'Describe a challenge at work and how you resolved it.'",
+          "Analyzes pauses, phoneme pronunciation, grammar, and vocabulary.",
+          "Generates instant CEFR Level B2 report with timestamps of mispronounced words.",
+          "Student pays $9.99 to unlock official PDF certificate."
+        ],
+        mockUIDesc: "Minimalist voice orb interface reacting to speech, timer countdown, post-test performance radar, and certificate download button.",
+        compliance: "Educational privacy laws (FERPA, COPPA for minors); voice biometric recording privacy consent.",
+        simulatedUI: {
+          type: "oral",
+          metricLabel: "Speaking Exams Proctored",
+          metricValue: "78 Exams",
+          feeEarned: "$779.22",
+          liveBadge: "CEFR Level: B2 High Fluency",
+          actionBtn: "Unlock Certified Scorecard ($9.99)"
+        }
+      },
+      {
+        id: 37,
+        name: "CodeVetting AI",
+        category: "Education",
+        concept: "Conducts interactive 30-minute technical coding interviews in a collaborative browser IDE, providing hints and screening candidates.",
+        useCase: "Screens hundreds of software engineering applicants objectively without wasting senior engineers' expensive calendar hours.",
+        targetUsers: "Technical Recruiters & Engineering Hiring Managers",
+        revenueModel: "$25 per completed, anti-cheat verified technical candidate screening report.",
+        revenueType: "Fixed",
+        difficulty: "Hard",
+        demoSteps: [
+          "Candidate clicks technical interview link.",
+          "Agent presents problem: 'Implement an LRU Cache with O(1) ops.'",
+          "Candidate codes; agent asks: 'What happens if two threads call put simultaneously?'",
+          "Agent evaluates problem-solving depth and monitors for pasted code patterns.",
+          "Hiring manager receives comprehensive scorecard; company billed $25."
+        ],
+        mockUIDesc: "Web IDE: Problem & proctor chat on left, code editor with test runner in center, recruiter evaluation dashboard on right.",
+        compliance: "Employment laws on AI hiring (NYC Local Law 144 bias audits on automated employment decision tools).",
+        simulatedUI: {
+          type: "codevet",
+          metricLabel: "Candidate Screens Completed",
+          metricValue: "24 Candidates",
+          feeEarned: "$600.00",
+          liveBadge: "Algorithm Solved: O(1) Verified",
+          actionBtn: "Deliver Candidate Dossier ($25)"
+        }
+      },
+      {
+        id: 38,
+        name: "CourseToAudiobook",
+        category: "Education",
+        concept: "Ingests technical textbooks or training slides, structures them into an episodic narrative podcast, and synthesizes a dual-speaker audio masterclass.",
+        useCase: "Allows busy students and professionals to absorb dense academic syllabi and technical manuals on their daily commutes.",
+        targetUsers: "Bar/Medical Exam Students & Corporate L&D",
+        revenueModel: "$19 per generated 60-minute audio learning masterclass.",
+        revenueType: "Fixed",
+        difficulty: "Medium",
+        demoSteps: [
+          "Bar exam student uploads 150-page PDF on Constitutional Law.",
+          "Agent restructures material into five 15-minute Socratic dialogue episodes.",
+          "Synthesizes audio using dual-speaker voice models with audio review cues.",
+          "Student listens on private podcast RSS feed.",
+          "Student billed $19 via Apple Pay upon audio completion."
+        ],
+        mockUIDesc: "Document upload zone, episode outline manager with topic nodes, audio player with transcript sync, and private RSS export button.",
+        compliance: "Copyright of uploaded materials (fair use vs derivative works); synthetic audio voice licensing.",
+        simulatedUI: {
+          type: "audiobook",
+          metricLabel: "Masterclasses Synthesized",
+          metricValue: "36 Courses",
+          feeEarned: "$684.00",
+          liveBadge: "5 Episodes Synced to RSS",
+          actionBtn: "Export Private Podcast Feed ($19)"
+        }
+      },
+      {
+        id: 39,
+        name: "SyllabusCloner",
+        category: "Education",
+        concept: "Takes degree requirements and industry skill benchmarks, generating fully accredited course syllabi, assignments, and rubrics.",
+        useCase: "Enables colleges, bootcamps, and instructors to launch brand-new modern technical curricula aligned with industry standards in minutes.",
+        targetUsers: "University Instructors & Bootcamp Directors",
+        revenueModel: "$45 per complete 12-week accredited syllabus package.",
+        revenueType: "Fixed",
+        difficulty: "Easy",
+        demoSteps: [
+          "Instructor inputs goal: '12-Week Cloud Native Architecture with Kubernetes'.",
+          "Agent maps Bloom's taxonomy objectives to CNCF certification benchmarks.",
+          "Generates lecture topics, weekly homework assignments, and grading rubrics.",
+          "Instructor reviews and customizes in web document editor.",
+          "Instant checkout of $45 to export Canvas/Blackboard LMS cartridge format."
+        ],
+        mockUIDesc: "Curriculum architecture tree, Bloom's taxonomy meter, week-by-week module editor, and LMS export dropdown.",
+        compliance: "Accreditation board standards (ABET, QAA); intellectual property of curriculum materials.",
+        simulatedUI: {
+          type: "syllabus",
+          metricLabel: "Curricula Exported",
+          metricValue: "16 Packages",
+          feeEarned: "$720.00",
+          liveBadge: "Canvas LMS Cartridge Ready",
+          actionBtn: "Export 12-Week Course Pack ($45)"
+        }
+      },
+
+      // CATEGORY 8: LEGAL & COMPLIANCE
+      {
+        id: 40,
+        name: "RedlineBot",
+        category: "Legal & Compliance",
+        concept: "Ingests vendor contracts, flags non-standard liability/indemnity clauses against company playbook guidelines, and outputs redlined Word documents.",
+        useCase: "Accelerates procurement cycles by redlining routine NDAs and vendor SaaS agreements without waiting 5 days for outside legal counsel.",
+        targetUsers: "In-House Legal Counsel, Startup Founders & Procurement Teams",
+        revenueModel: "$19 per contract redlined or $99/mo for 10 contracts.",
+        revenueType: "Fixed",
+        difficulty: "Medium",
+        demoSteps: [
+          "Startup receives vendor MSA with uncapped liability and unilateral indemnity.",
+          "RedlineBot scans document against company standard risk playbook.",
+          "Applies Track Changes to .docx: caps liability at 12 months, adds mutual indemnity.",
+          "Founder downloads redlined file within 60 seconds.",
+          "$19 billed to company credit card via Stripe."
+        ],
+        mockUIDesc: "Side-by-side comparison of original text vs redline draft, risk badge tags, and 'Download .docx with Track Changes' button.",
+        compliance: "Unauthorized Practice of Law (UPL) disclaimer stating tool provides drafting aid, not legal advice.",
+        simulatedUI: {
+          type: "legal",
+          metricLabel: "Contracts Redlined",
+          metricValue: "52 Documents",
+          feeEarned: "$988.00",
+          liveBadge: "Liability Capped at 12 Mo",
+          actionBtn: "Download Redlined .docx ($19)"
+        }
+      },
+      {
+        id: 41,
+        name: "PrivacyAudit AI",
+        category: "Legal & Compliance",
+        concept: "Crawls a website, identifies undocumented cookies collecting PII without consent, and generates compliant privacy notices and banner scripts.",
+        useCase: "Keeps small e-commerce websites and agencies safe from crippling GDPR and CCPA privacy fines with a single automated script.",
+        targetUsers: "Web Agencies, E-Commerce Stores & SMB Site Owners",
+        revenueModel: "$49 per compliance audit and dynamic consent embed script.",
+        revenueType: "Fixed",
+        difficulty: "Medium",
+        demoSteps: [
+          "Store owner inputs URL: myboutique.com.",
+          "Agent runs headless browser crawl, detects 7 tracking scripts firing before user consent.",
+          "Generates custom cookie blocker snippet and updated GDPR/CCPA Privacy Notice.",
+          "Webmaster installs lightweight JavaScript snippet.",
+          "$49 charged to card; site compliant with GDPR consent mode."
+        ],
+        mockUIDesc: "Compliance score gauge (62% - At Risk), cookie inventory table with missing disclosure alerts, and 1-click deploy fix code block.",
+        compliance: "Regulatory compliance with GDPR, ePrivacy Directive, and state privacy acts (CCPA/CPRA).",
+        simulatedUI: {
+          type: "privacy",
+          metricLabel: "Websites Brought Compliant",
+          metricValue: "28 Websites",
+          feeEarned: "$1,372.00",
+          liveBadge: "Consent Blocker Deployed",
+          actionBtn: "Deploy Auto-Consent Fix ($49)"
+        }
+      },
+      {
+        id: 42,
+        name: "TenderShield",
+        category: "Legal & Compliance",
+        concept: "Ingests government tender bids, checks them against hundreds of mandatory compliance criteria, and eliminates disqualification risks.",
+        useCase: "Prevents government contractors from losing multi-million dollar public bids over minor clerical formatting or missing compliance checkboxes.",
+        targetUsers: "Government Contractors, Defense Suppliers & Infrastructure Firms",
+        revenueModel: "$250 per comprehensive RFP compliance check and matrix verification.",
+        revenueType: "Fixed",
+        difficulty: "Hard",
+        demoSteps: [
+          "Contractor prepares 300-page proposal for municipal water authority contract.",
+          "TenderShield parses solicitation requirements (Section L & M requirements).",
+          "Cross-checks proposal, detects missing CAGE code and invalid margin formatting in Appendix C.",
+          "Provides line-by-line compliance cross-reference matrix.",
+          "Contractor settles $250 invoice prior to final proposal release."
+        ],
+        mockUIDesc: "Bid verification progress bar, section compliance checklist with pass/fail indicators, and 'Generate Certified Compliance Matrix' button.",
+        compliance: "Federal procurement regulations; strict confidentiality of non-public bidding pricing.",
+        simulatedUI: {
+          type: "procure",
+          metricLabel: "Tenders Audited",
+          metricValue: "11 Bids",
+          feeEarned: "$2,750.00",
+          liveBadge: "Zero Disqualification Flags",
+          actionBtn: "Generate Certified Matrix ($250)"
+        }
+      },
+      {
+        id: 43,
+        name: "MusicClear AI",
+        category: "Legal & Compliance",
+        concept: "Listens to music tracks, detects audio samples or melodic similarities, identifies copyright owners, and drafts sync clearance packages.",
+        useCase: "Allows indie filmmakers and music producers to discover who owns sampled beats and secure legal sync licenses before festival release.",
+        targetUsers: "Music Producers, Indie Filmmakers & Ad Agencies",
+        revenueModel: "$29 per track clearance report + 5% facilitation fee on negotiated licensing payouts.",
+        revenueType: "Fixed",
+        difficulty: "Hard",
+        demoSteps: [
+          "Filmmaker uploads indie rock track intended for a festival film.",
+          "Agent detects drum break sampled from 1974 soul record; locates rights holders in ASCAP registries.",
+          "Generates pre-filled sync license request letters with standard fee guidelines.",
+          "Producer purchases report for $29.",
+          "Master rights holder accepts fee; agent captures facilitation fee."
+        ],
+        mockUIDesc: "Audio player with highlighted sample waveforms, rights holder tree diagram, clearance status tracker, and inquiry portal.",
+        compliance: "Copyright infringement liability; statutory mechanical and master use licensing regulations.",
+        simulatedUI: {
+          type: "music",
+          metricLabel: "Audio Tracks Cleared",
+          metricValue: "22 Tracks",
+          feeEarned: "$638.00",
+          liveBadge: "Rights Holder Identified in ASCAP",
+          actionBtn: "Download Clearance Pack ($29)"
+        }
+      },
+
+      // CATEGORY 9: HEALTHCARE ADMIN & WELLNESS
+      {
+        id: 44,
+        name: "PriorAuth Express",
+        category: "Healthcare",
+        concept: "Ingests clinical notes, cross-checks insurer prior-authorization guidelines, and drafts approved request packets with clinical citations.",
+        useCase: "Saves medical clinics hundreds of staff hours spent fighting insurance prior-authorization denials for essential imaging and procedures.",
+        targetUsers: "Private Clinics, Medical Specialists & Dental Practices",
+        revenueModel: "$15 per compiled and submitted prior authorization dossier.",
+        revenueType: "Fixed",
+        difficulty: "Hard",
+        demoSteps: [
+          "Clinic inputs physician notes for MRI request for knee pain.",
+          "Agent checks insurer bulletin (requires 6 weeks physical therapy completed).",
+          "Locates PT records in patient chart; compiles citation dossier matching insurer checklist.",
+          "Generates pre-filled CMS-1500 prior-auth form ready for electronic submission.",
+          "Clinic account billed $15 per successful dossier generation."
+        ],
+        mockUIDesc: "Patient authorization queue, insurer policy checklist (green ticks on satisfied criteria), and 'Submit to Payer Portal ($15)' button.",
+        compliance: "Strict HIPAA compliance, Business Associate Agreement (BAA) execution, PHI encryption, zero-retention LLM endpoints.",
+        simulatedUI: {
+          type: "health",
+          metricLabel: "Prior-Auths Compiled",
+          metricValue: "48 Packets",
+          feeEarned: "$720.00",
+          liveBadge: "Insurer Policy Criteria Satisfied",
+          actionBtn: "Submit Authorization Dossier ($15)"
+        }
+      },
+      {
+        id: 45,
+        name: "DentistRecall",
+        category: "Healthcare",
+        concept: "Monitors dental PMS for cancelled appointments, identifies overdue patients, and texts them conversational booking invites within hours.",
+        useCase: "Eliminates dead chair time in dental practices by filling same-day cancellations automatically via friendly SMS outreach.",
+        targetUsers: "Dental Offices & Orthodontic Practices",
+        revenueModel: "$20 per recovered appointment confirmed and filled on the dental schedule.",
+        revenueType: "Lead Bounty",
+        difficulty: "Medium",
+        demoSteps: [
+          "Patient cancels 2:00 PM cleaning at 9:00 AM.",
+          "DentistRecall scans database for patients due for 6-month cleaning living within 5 miles.",
+          "Texts top candidate: 'Hi Sarah, Dr. Lee had a surprise 2:00 PM hygiene opening today. Want to grab it?'",
+          "Sarah replies: 'Yes! See you at 2.'",
+          "Appointment booked in Dentrix; practice automatically billed $20 fee."
+        ],
+        mockUIDesc: "Chair utilization calendar showing filled vs open slots, 'Recovered Revenue Today ($780)', and patient targeting proximity filter.",
+        compliance: "HIPAA compliance; TCPA regulations for SMS consent.",
+        simulatedUI: {
+          type: "dental",
+          metricLabel: "Empty Chairs Recovered",
+          metricValue: "16 Appointments",
+          feeEarned: "$320.00",
+          liveBadge: "Same-Day 2:00 PM Slot Filled",
+          actionBtn: "Log Recovered Booking Fee ($20)"
+        }
+      },
+      {
+        id: 46,
+        name: "WellnessIntake",
+        category: "Healthcare",
+        concept: "Converts patient intake voice interviews into compliant SOAP notes and drafts personalized home-exercise rehabilitation guides.",
+        useCase: "Enables chiropractors and physical therapists to spend more time with patients while charting notes and sending home exercise plans in one tap.",
+        targetUsers: "Chiropractors, Physical Therapists & Acupuncturists",
+        revenueModel: "$1.50 per formatted SOAP note + $3.00 per customized patient home exercise portal.",
+        revenueType: "Micro-fee",
+        difficulty: "Easy",
+        demoSteps: [
+          "Physical therapist records 5-min patient assessment of rotator cuff impingement.",
+          "Agent formats complete medical SOAP note ready for EHR insertion.",
+          "Creates branded PDF patient home program with illustrated exercises and dosage.",
+          "Therapist approves with one click.",
+          "Practice billed $4.50 total for SOAP note and exercise guide."
+        ],
+        mockUIDesc: "Therapist tablet interface: Audio record button, SOAP note editor with ICD-10 suggestions, and 'Export to EHR ($4.50)' button.",
+        compliance: "HIPAA compliance; physical therapy licensure practice bounds disclaimer.",
+        simulatedUI: {
+          type: "soap",
+          metricLabel: "SOAP Notes & Guides",
+          metricValue: "52 Completed",
+          feeEarned: "$234.00",
+          liveBadge: "ICD-10 M75.10 Included",
+          actionBtn: "Export Note & Home Plan ($4.50)"
+        }
+      },
+
+      // CATEGORY 10: TRADING & ARBITRAGE
+      {
+        id: 47,
+        name: "SEC Filings Alerter",
+        category: "Trading & Arbitrage",
+        concept: "Parses SEC EDGAR 8-K/10-Q filings within 4 seconds of release, alerting day traders to material non-obvious disclosures.",
+        useCase: "Gives active equity traders an immediate informational advantage on biotech trial halts, executive departures, and hidden litigation.",
+        targetUsers: "Day Traders, Hedge Fund Analysts & Retail Investors",
+        revenueModel: "$49/mo subscription or $0.25 per real-time push alert with sentiment analysis.",
+        revenueType: "Micro-fee",
+        difficulty: "Hard",
+        demoSteps: [
+          "Small-cap biotech company drops unheralded 8-K filing at 4:02 PM.",
+          "Agent parses text in 2.8 seconds, finding hidden FDA clinical trial partial hold clause in Item 8.01.",
+          "Fires push notification to subscribed traders before financial blogs report it.",
+          "Trader opens alert, reviews excerpt and sentiment score (-0.85).",
+          "Micro-billing charges trader account $0.25."
+        ],
+        mockUIDesc: "Terminal-style radar: Scrolling feed of SEC filings, sentiment badges (Bullish/Bearish), filing excerpt popover, and broker fast-trade button.",
+        compliance: "SEC regulations; strict disclaimer that outputs constitute data analysis, not financial advice.",
+        simulatedUI: {
+          type: "sec",
+          metricLabel: "Real-Time 8-K Alerts",
+          metricValue: "182 Fired",
+          feeEarned: "$45.50",
+          liveBadge: "FDA Clinical Hold Detected in 2.8s",
+          actionBtn: "Send Instant Push Alert ($0.25)"
+        }
+      },
+      {
+        id: 48,
+        name: "CardFlip",
+        category: "Trading & Arbitrage",
+        concept: "Scrapes newly listed eBay Buy-It-Now sports cards, compares prices against recent PSA auction comps, and alerts on undervalued listings.",
+        useCase: "Enables sports card flippers to buy mispriced vintage and modern cards within seconds of listing before other flippers notice.",
+        targetUsers: "Sports Card Flippers, Hobby Collectors & Dealers",
+        revenueModel: "$19/mo base + $2.00 unlock fee for instant 1-click buy links on margins > 35%.",
+        revenueType: "Micro-fee",
+        difficulty: "Medium",
+        demoSteps: [
+          "Seller lists raw 2003 Topps Chrome LeBron James rookie card with Buy-It-Now for $250.",
+          "CardFlip runs vision analysis on photos, predicts grading potential (PSA 8-9, worth $750+).",
+          "Pushes alert: 'Arbitrage detected: Buy at $250, Est. Comp $700, Net Margin 62%'.",
+          "Collector taps 'Unlock Link' ($2.00 fee) and buys card on eBay within 30 seconds.",
+          "$2.00 captured via Stripe micro-transaction."
+        ],
+        mockUIDesc: "Hobbyist sniper app: Card grid with 'Margin %' badge, comp comparison chart, grading risk meter, and 'Buy on eBay Now' quick action.",
+        compliance: "eBay API terms; valuation risk disclaimers (grading outcomes are not guaranteed).",
+        simulatedUI: {
+          type: "card",
+          metricLabel: "Arbitrage Alerts Unlocked",
+          metricValue: "44 Unlocked",
+          feeEarned: "$88.00",
+          liveBadge: "62% Net Profit Margin",
+          actionBtn: "Unlock 1-Click Buy Link ($2.00)"
+        }
+      },
+      {
+        id: 49,
+        name: "DomainFlippr",
+        category: "Trading & Arbitrage",
+        concept: "Monitors daily drop lists of expiring domain names, parses historic backlinks, checks trademarks, and computes commercial resale value.",
+        useCase: "Helps SEO portfolio builders identify high-equity expired domains with clean backlink profiles while avoiding trademark lawsuits.",
+        targetUsers: "Domain Investors, SEO Agencies & Affiliate Builders",
+        revenueModel: "$5.00 per analyzed, trademark-cleared domain dossier + 5% affiliate backorder commission.",
+        revenueType: "Fixed",
+        difficulty: "Easy",
+        demoSteps: [
+          "50,000 domains drop on auctions.",
+          "DomainFlippr filters for high DR, cleans spam history via Wayback API, and checks USPTO trademark records.",
+          "Identifies EcoRoofingDirect.com with 400 clean backlinks and zero trademark conflicts.",
+          "Investor purchases SEO and valuation dossier for $5.00.",
+          "Agent registers backorder through partner registrar; captures commission."
+        ],
+        mockUIDesc: "Filterable table (DR, Backlinks, Age, Est. Value), Trademark Risk Status (Clear/Warning), Wayback snapshot preview, and 'Backorder ($5)' button.",
+        compliance: "Anticybersquatting Consumer Protection Act (ACPA); automated trademark infringement verification.",
+        simulatedUI: {
+          type: "domain",
+          metricLabel: "Dossiers Purchased",
+          metricValue: "58 Reports",
+          feeEarned: "$290.00",
+          liveBadge: "USPTO Trademark: Clean",
+          actionBtn: "Buy Domain Valuation Pack ($5.00)"
+        }
+      },
+      {
+        id: 50,
+        name: "FreightRate Arbitrage",
+        category: "Trading & Arbitrage",
+        concept: "Monitors DAT/Truckstop load boards, matches unassigned freight with owner-operator lanes, and drafts optimized spot rate counter-bids.",
+        useCase: "Secures top-dollar spot rates for independent truck drivers by calculating regional lane supply and sending counter-bids before brokers lock in lower rates.",
+        targetUsers: "Independent Freight Dispatchers & Owner-Operators",
+        revenueModel: "$3.50 per matched load bid submitted + $25 per booked freight load.",
+        revenueType: "Lead Bounty",
+        difficulty: "Medium",
+        demoSteps: [
+          "Shipper posts 40,000 lb reefer load from Atlanta to Chicago paying $2,100.",
+          "Agent checks carrier truck location, fuel cost, tolls, and regional spot average ($2,550).",
+          "Sends immediate counter-bid of $2,450 citing regional capacity tightness.",
+          "Broker accepts rate confirmation; load is booked.",
+          "Dispatcher account debited $25.00 success fee upon rate-con PDF upload."
+        ],
+        mockUIDesc: "Freight Command Center: Active lane map with spot rate heatmaps, load board matcher with 'Net Profit per Mile', and 1-click counter-bid submission.",
+        compliance: "FMCSA regulations, broker-carrier agreement compliance, insurance certificate verification rules.",
+        simulatedUI: {
+          type: "freight",
+          metricLabel: "Loads Booked Today",
+          metricValue: "8 Loads",
+          feeEarned: "$200.00",
+          liveBadge: "Rate Con Approved: $2,450",
+          actionBtn: "Confirm Load Booking Fee ($25)"
+        }
+      }
+    ];
+
+    // State
+    let currentCategory = "All";
+    let currentDifficulty = "All";
+    let currentRevModel = "All";
+    let searchQuery = "";
+
+    // Categories
+    const categories = ["All", "E-Commerce", "Freelance & Agency", "Finance & Cost", "Sales & Leads", "Customer Support", "Real Estate", "Education", "Legal & Compliance", "Healthcare", "Trading & Arbitrage"];
+
+    // Initialize UI
+    function init() {
+      renderCategoryPills();
+      renderAgents();
+
+      // Event listeners
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase();
+        renderAgents();
+      });
+
+      document.getElementById('difficultyFilter').addEventListener('change', (e) => {
+        currentDifficulty = e.target.value;
+        renderAgents();
+      });
+
+      document.getElementById('revModelFilter').addEventListener('change', (e) => {
+        currentRevModel = e.target.value;
+        renderAgents();
+      });
+    }
+
+    // Render category pills
+    function renderCategoryPills() {
+      const container = document.getElementById('categoryPills');
+      container.innerHTML = categories.map(cat => {
+        const isActive = cat === currentCategory;
+        return `
+          <button onclick="setCategory('${cat}')" 
+            class="px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+              isActive 
+                ? 'bg-indigo-600 text-white shadow-sm' 
+                : 'bg-[var(--background,#090d16)] text-[var(--muted-foreground,#94a3b8)] hover:text-white hover:bg-[var(--border,#1e293b)]'
+            }">
+            ${cat}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      renderCategoryPills();
+      renderAgents();
+    }
+
+    function resetFilters() {
+      currentCategory = "All";
+      currentDifficulty = "All";
+      currentRevModel = "All";
+      searchQuery = "";
+      document.getElementById('searchInput').value = "";
+      document.getElementById('difficultyFilter').value = "All";
+      document.getElementById('revModelFilter').value = "All";
+      renderCategoryPills();
+      renderAgents();
+    }
+
+    // Filter agents
+    function getFilteredAgents() {
+      return AGENTS.filter(agent => {
+        const matchesCategory = currentCategory === "All" || agent.category === currentCategory;
+        const matchesDifficulty = currentDifficulty === "All" || agent.difficulty === currentDifficulty;
+        const matchesRevModel = currentRevModel === "All" || agent.revenueType === currentRevModel;
+        const matchesSearch = !searchQuery || 
+          agent.name.toLowerCase().includes(searchQuery) || 
+          agent.concept.toLowerCase().includes(searchQuery) ||
+          agent.useCase.toLowerCase().includes(searchQuery) ||
+          agent.targetUsers.toLowerCase().includes(searchQuery);
+
+        return matchesCategory && matchesDifficulty && matchesRevModel && matchesSearch;
+      });
+    }
+
+    // Render Grid
+    function renderAgents() {
+      const filtered = getFilteredAgents();
+      const grid = document.getElementById('agentGrid');
+      const emptyState = document.getElementById('emptyState');
+      const visibleCount = document.getElementById('visibleCount');
+
+      visibleCount.innerText = filtered.length;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = "";
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      grid.innerHTML = filtered.map(agent => {
+        const diffColor = agent.difficulty === 'Easy' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' :
+                          agent.difficulty === 'Medium' ? 'bg-amber-500/15 text-amber-400 border-amber-500/30' :
+                          'bg-rose-500/15 text-rose-400 border-rose-500/30';
+
+        return `
+          <div class="bg-[var(--card,#111827)] border border-[var(--border,#1f2937)] hover:border-indigo-500/50 rounded-xl p-5 flex flex-col justify-between shadow-md transition-all hover:shadow-lg group">
+            <div class="space-y-3">
+              <!-- Top Badges -->
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-bold text-indigo-400 font-mono">#${agent.id < 10 ? '0' + agent.id : agent.id}</span>
+                <div class="flex items-center gap-1.5 flex-wrap justify-end">
+                  <span class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-[var(--background,#090d16)] text-[var(--muted-foreground,#94a3b8)] border border-[var(--border,#1e293b)]">
+                    ${agent.category}
+                  </span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-full font-medium border ${diffColor}">
+                    ${agent.difficulty}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Name & Concept -->
+              <div>
+                <h3 class="text-base font-bold text-[var(--foreground,#f8fafc)] group-hover:text-indigo-300 transition-colors">
+                  ${agent.name}
+                </h3>
+                <p class="text-xs text-[var(--muted-foreground,#94a3b8)] mt-1 line-clamp-2 leading-relaxed">
+                  ${agent.concept}
+                </p>
+              </div>
+
+              <!-- High-Level Use Case Callout -->
+              <div class="bg-[var(--background,#090d16)] border border-[var(--border,#1e293b)] rounded-lg p-2.5">
+                <div class="text-[10px] font-semibold text-indigo-400 uppercase tracking-wide mb-0.5">Core Commercial Use Case</div>
+                <p class="text-xs text-slate-300 line-clamp-2">
+                  ${agent.useCase}
+                </p>
+              </div>
+
+              <!-- Revenue Model Tag -->
+              <div class="flex items-center gap-1.5 text-xs text-emerald-400 font-medium">
+                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="truncate">${agent.revenueModel}</span>
+              </div>
+            </div>
+
+            <!-- Footer Action -->
+            <div class="mt-4 pt-3 border-t border-[var(--border,#1f2937)] flex items-center justify-between">
+              <span class="text-[11px] text-[var(--muted-foreground,#64748b)] truncate max-w-[150px]">
+                ${agent.targetUsers.split('&')[0]}
+              </span>
+              <button onclick="openModal(${agent.id})" 
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600/20 text-indigo-300 hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-1">
+                Explore UI & Demo
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Open Modal
+    function openModal(id) {
+      const agent = AGENTS.find(a => a.id === id);
+      if (!agent) return;
+
+      document.getElementById('modalAgentName').innerText = `${agent.name} (#${agent.id})`;
+      document.getElementById('modalAgentConcept').innerText = agent.concept;
+      document.getElementById('modalCategoryBadge').innerText = agent.category;
+      document.getElementById('modalUseCase').innerText = agent.useCase;
+      document.getElementById('modalTargetUsers').innerText = agent.targetUsers;
+      document.getElementById('modalRevenueModel').innerText = agent.revenueModel;
+      document.getElementById('modalCompliance').innerText = agent.compliance;
+
+      // Badges
+      const diffBadge = document.getElementById('modalDifficultyBadge');
+      diffBadge.innerText = `${agent.difficulty} MVP`;
+      diffBadge.className = `px-2 py-0.5 rounded text-xs font-semibold ${
+        agent.difficulty === 'Easy' ? 'bg-emerald-500/15 text-emerald-400' :
+        agent.difficulty === 'Medium' ? 'bg-amber-500/15 text-amber-400' :
+        'bg-rose-500/15 text-rose-400'
+      }`;
+
+      document.getElementById('modalRevTypeBadge').innerText = agent.revenueType;
+
+      // Demo Steps
+      const demoContainer = document.getElementById('modalDemoSteps');
+      demoContainer.innerHTML = agent.demoSteps.map((step, idx) => `
+        <div class="flex items-start gap-2.5 text-xs text-slate-300">
+          <span class="w-5 h-5 rounded-full bg-indigo-600/30 text-indigo-300 flex items-center justify-center font-bold text-[10px] flex-shrink-0 mt-0.5">
+            ${idx + 1}
+          </span>
+          <span class="leading-relaxed">${step}</span>
+        </div>
+      `).join('');
+
+      // Simulated Interactive UI Wireframe
+      const uiContainer = document.getElementById('modalMockUIContainer');
+      const sim = agent.simulatedUI;
+      uiContainer.innerHTML = `
+        <div class="space-y-3">
+          <!-- Mock Header Bar -->
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+              <span class="text-xs font-semibold text-slate-200">${agent.name} Controller</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">Live Daemon</span>
+            </div>
+            <div class="text-xs font-mono text-emerald-400 font-bold">${sim.liveBadge}</div>
+          </div>
+
+          <!-- Mock Ticker Cards -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-slate-900 border border-slate-800 rounded-lg p-3">
+              <div class="text-[10px] uppercase text-slate-400 tracking-wider">${sim.metricLabel}</div>
+              <div class="text-lg font-bold text-white font-mono mt-0.5">${sim.metricValue}</div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-lg p-3">
+              <div class="text-[10px] uppercase text-emerald-400 tracking-wider">Agent Real-Time Fee</div>
+              <div class="text-lg font-bold text-emerald-400 font-mono mt-0.5">${sim.feeEarned}</div>
+            </div>
+          </div>
+
+          <!-- Mock UI Spec Description -->
+          <div class="text-[11px] text-slate-400 italic bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+            <span class="font-semibold text-slate-300 not-italic">Designer Wireframe Spec:</span> ${agent.mockUIDesc}
+          </div>
+
+          <!-- Interactive Action Simulator -->
+          <div class="pt-2 flex items-center justify-between">
+            <span class="text-xs text-slate-400">Simulate Real-Time Trigger:</span>
+            <button onclick="simulateAction('${agent.name}', '${sim.feeEarned}')" 
+              class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs rounded-lg transition-all shadow-md hover:shadow-emerald-500/20">
+              ${sim.actionBtn}
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('agentModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('agentModal').classList.add('hidden');
+    }
+
+    // Action Simulator Toast
+    function simulateAction(name, fee) {
+      alert(`⚡ [Simulated Real-Time Event]\n\nAgent: ${name}\nTrigger Status: Executed Successfully!\nRevenue Recorded: ${fee} billed to customer account via Stripe Webhook.`);
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Run on load
+    init();
+  </script>
+</body>
+</html>
